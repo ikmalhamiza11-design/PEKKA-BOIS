@@ -18,6 +18,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\Penjual\UlasanController as UlasanPenjualController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SahabatPekkaController;
 use App\Http\Controllers\UlasanController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,12 +31,14 @@ $segera = [
     'peta' => 'Peta Usaha',
     'kegiatan' => 'Kegiatan',
     'panduan' => 'Panduan',
-    'sahabat-pekka' => 'Sahabat PEKKA',
 ];
 
 foreach ($segera as $alamat => $judul) {
     Route::view('/'.$alamat, 'segera', ['judul' => $judul])->name($alamat);
 }
+
+Route::get('/sahabat-pekka', [SahabatPekkaController::class, 'index'])->name('sahabat-pekka');
+Route::post('/sahabat-pekka/kirim', [SahabatPekkaController::class, 'kirim'])->middleware('throttle:12,1,sahabat.kirim.')->name('sahabat-pekka.kirim');
 
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [LoginController::class, 'create'])->name('login');

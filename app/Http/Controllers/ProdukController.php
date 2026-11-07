@@ -25,7 +25,7 @@ class ProdukController extends Controller
             ->take(4)
             ->get();
 
-        $ulasan = Review::where('product_id', $produk->id)
+        $ulasan = Review::tampil()->where('product_id', $produk->id)
             ->with('user')
             ->latest('id')
             ->paginate(5, ['*'], 'ulasan')
@@ -35,8 +35,8 @@ class ProdukController extends Controller
             'produk' => $produk,
             'lainnya' => $lainnya,
             'ulasan' => $ulasan,
-            'ringkasan' => $layananUlasan->ringkasan(Review::where('product_id', $produk->id)),
-            'ringkasanToko' => $layananUlasan->ringkasan(Review::where('shop_id', $produk->shop_id)),
+            'ringkasan' => $layananUlasan->ringkasan(Review::tampil()->where('product_id', $produk->id)),
+            'ringkasanToko' => $layananUlasan->ringkasan(Review::tampil()->where('shop_id', $produk->shop_id)),
         ]);
     }
 }

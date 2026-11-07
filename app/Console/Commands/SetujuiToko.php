@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -10,7 +9,7 @@ class SetujuiToko extends Command
 {
     protected $signature = 'toko:setujui {email}';
 
-    protected $description = 'Setujui toko milik penjual (sementara, sampai halaman verifikasi admin kelompok dibuat)';
+    protected $description = 'Setujui toko milik penjual lewat terminal (cadangan selain panel admin)';
 
     public function handle(): int
     {
@@ -22,7 +21,7 @@ class SetujuiToko extends Command
             return self::FAILURE;
         }
 
-        $toko->update(['status' => Shop::TERVERIFIKASI]);
+        $toko->setujui();
         $this->info('Toko "'.$toko->nama.'" sekarang terverifikasi.');
 
         return self::SUCCESS;

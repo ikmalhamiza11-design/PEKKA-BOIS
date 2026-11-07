@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\HanyaAdmin;
+use App\Http\Middleware\HanyaAdminDinas;
 use App\Http\Middleware\HanyaPenjual;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->alias([
             'penjual' => HanyaPenjual::class,
+            'admin' => HanyaAdmin::class,
+            'admin.dinas' => HanyaAdminDinas::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -22,7 +22,13 @@
         @if ($shop->status === \App\Models\Shop::MENUNGGU)
             <x-alert judul="Toko menunggu verifikasi">Produkmu belum tampil di katalog sampai admin kelompok memverifikasi tokomu.</x-alert>
         @elseif ($shop->status === \App\Models\Shop::DITOLAK)
-            <x-alert tipe="galat" judul="Toko belum disetujui">Hubungi admin kelompok PEKKA untuk menanyakan alasannya.</x-alert>
+            <x-alert tipe="galat" judul="Toko belum disetujui">
+                @if ($shop->alasan_penolakan)
+                    Alasan: {{ $shop->alasan_penolakan }}
+                @else
+                    Hubungi admin kelompok PEKKA untuk menanyakan alasannya.
+                @endif
+            </x-alert>
         @endif
 
         @if ($ringkasan)

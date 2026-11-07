@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Notifications\ResetKataSandi;
 use App\Notifications\VerifyAkunPeka;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,6 +47,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Shop::class);
     }
 
+    public function kelompok(): BelongsTo
+    {
+        return $this->belongsTo(Kelompok::class);
+    }
+
     public function keranjang(): HasMany
     {
         return $this->hasMany(CartItem::class);
@@ -53,6 +60,37 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function adalahAdminDinas(): bool
+    {
+        return $this->role === self::ADMIN_DINAS;
+    }
+
+    public function adalahAdminKelompok(): bool
+    {
+        return $this->role === self::ADMIN_KELOMPOK;
+    }
+
+    public function adalahAdmin(): bool
+    {
+        return $this->adalahAdminDinas() || $this->adalahAdminKelompok();
+    }
+
+    public function cakupanToko(): Builder
+    {
+        $toko = Shop::query();
+
+        if ($this->adalahAdminDinas()) {
+            return $toko;
+        }
+
+        return $toko->where('kelompok_id', $this->kelompok_id ?? 0);
+    }
+
+    public function cakupanUlasan(): Builder
+    {
+        return Review::query()->whereIn('shop_id', $this->cakupanToko()->select('shops.id'));
     }
 
     public function labelPeran(): string

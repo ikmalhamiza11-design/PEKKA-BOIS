@@ -59,5 +59,9 @@ return [
         'rating' => 'Penilaian',
         'komentar' => 'Ulasan',
         'balasan' => 'Balasan',
+        'alasan' => 'Alasan',
+        'desa' => 'Desa',
+        'kecamatan' => 'Kecamatan',
+        'daftar' => 'Daftar kelompok',
     ],
 ];

@@ -12,6 +12,10 @@
         $nilaiAwal = (int) old('rating', $ulasan?->rating);
     @endphp
 
+    @if ($ulasan?->disembunyikan())
+        <x-alert tipe="galat" judul="Ulasanmu disembunyikan admin">Ulasan ini tidak tampil di halaman produk. Alasan: {{ $ulasan->alasan_moderasi }}</x-alert>
+    @endif
+
     <section class="card !p-4">
         <p class="text-xs font-bold uppercase tracking-wide text-olive/70">Produk yang kamu beli</p>
         <p class="mt-1 font-extrabold">{{ $item->nama }}</p>

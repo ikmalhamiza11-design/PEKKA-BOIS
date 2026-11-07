@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,7 +24,41 @@ class Review extends Model
         return [
             'rating' => 'integer',
             'dibalas_at' => 'datetime',
+            'disembunyikan_at' => 'datetime',
         ];
+    }
+
+    public function scopeTampil(Builder $query): void
+    {
+        $query->whereNull('disembunyikan_at');
+    }
+
+    public function scopeDisembunyikan(Builder $query): void
+    {
+        $query->whereNotNull('disembunyikan_at');
+    }
+
+    public function disembunyikan(): bool
+    {
+        return $this->disembunyikan_at !== null;
+    }
+
+    public function sembunyikan(User $admin, string $alasan): void
+    {
+        $this->forceFill([
+            'disembunyikan_at' => now(),
+            'alasan_moderasi' => $alasan,
+            'dimoderasi_oleh' => $admin->id,
+        ])->save();
+    }
+
+    public function tampilkanKembali(User $admin): void
+    {
+        $this->forceFill([
+            'disembunyikan_at' => null,
+            'alasan_moderasi' => null,
+            'dimoderasi_oleh' => $admin->id,
+        ])->save();
     }
 
     public function user(): BelongsTo

@@ -96,9 +96,9 @@
             </div>
             <div class="flex flex-col gap-3 lg:items-end">
                 <div class="hidden flex-wrap gap-2 lg:flex">
-                    <a href="{{ route('sahabat-pekka') }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Tanya NIB Usaha</a>
-                    <a href="{{ route('sahabat-pekka') }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Cara Belanja</a>
-                    <a href="{{ route('sahabat-pekka') }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Label Halal</a>
+                    <a href="{{ route('sahabat-pekka', ['tanya' => 'Bagaimana cara mengurus NIB untuk usaha kecil?']) }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Tanya NIB Usaha</a>
+                    <a href="{{ route('sahabat-pekka', ['tanya' => 'Bagaimana cara belanja di PEKKA BOIS?']) }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Cara Belanja</a>
+                    <a href="{{ route('sahabat-pekka', ['tanya' => 'Bagaimana cara mengurus label halal untuk produk makanan?']) }}" class="rounded-full border border-olive/20 px-3 py-1.5 text-xs font-bold text-olive hover:bg-lime/30">Label Halal</a>
                 </div>
                 <a href="{{ route('sahabat-pekka') }}" class="btn-primary lg:w-auto">Tanya Sahabat PEKKA</a>
             </div>
