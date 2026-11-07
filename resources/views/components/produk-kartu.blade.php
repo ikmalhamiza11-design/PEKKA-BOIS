@@ -19,6 +19,9 @@
     <div class="flex flex-1 flex-col gap-1.5 px-1 pb-1 pt-3">
         <h3 class="text-sm font-extrabold leading-snug"><a href="{{ route('produk.show', $produk->id) }}" class="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-olive">{{ $produk->nama }}</a></h3>
         <p class="font-extrabold text-olive">{{ $produk->harga_rupiah }}</p>
+        @if (($produk->reviews_count ?? 0) > 0)
+            <x-bintang :nilai="$produk->reviews_avg_rating" :jumlah="$produk->reviews_count" :kecil="true" />
+        @endif
         <div class="rounded-lg bg-lime/15 px-2.5 py-1.5 text-xs text-ink/70">
             <p class="font-bold text-ink/80">{{ $produk->shop->nama }}</p>
             <p>{{ $produk->shop->kelompok->nama }} &middot; {{ $habis ? 'Stok habis' : 'Stok: '.$produk->stok }}</p>

@@ -105,6 +105,17 @@ function pasangTab() {
         tombol.forEach((item) => {
             item.addEventListener('click', () => pilih(item.dataset.tabTombol));
         });
+
+        const dariHash = () => {
+            const awal = window.location.hash.slice(1);
+
+            if (awal && Array.from(tombol).some((item) => item.dataset.tabTombol === awal)) {
+                pilih(awal);
+            }
+        };
+
+        dariHash();
+        window.addEventListener('hashchange', dariHash);
     });
 }
 

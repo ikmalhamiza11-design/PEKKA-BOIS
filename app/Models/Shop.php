@@ -41,6 +41,11 @@ class Shop extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function punyaRekening(): bool
     {
         return filled($this->nama_bank) && filled($this->nomor_rekening) && filled($this->atas_nama);

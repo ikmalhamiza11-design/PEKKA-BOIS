@@ -10,6 +10,7 @@ return [
     'email' => 'Format :attribute belum benar. Contoh: nama@email.com',
     'exists' => ':attribute yang dipilih tidak valid.',
     'image' => ':attribute harus berupa gambar (JPG, PNG, atau WebP).',
+    'in' => ':attribute yang dipilih tidak valid.',
     'integer' => ':attribute harus berupa angka bulat, tanpa titik atau koma.',
     'max' => [
         'string' => ':attribute terlalu panjang, maksimal :max karakter.',
@@ -55,5 +56,8 @@ return [
         'catatan' => 'Catatan',
         'jumlah' => 'Jumlah',
         'product_id' => 'Produk',
+        'rating' => 'Penilaian',
+        'komentar' => 'Ulasan',
+        'balasan' => 'Balasan',
     ],
 ];

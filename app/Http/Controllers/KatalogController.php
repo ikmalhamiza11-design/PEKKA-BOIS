@@ -27,7 +27,7 @@ class KatalogController extends Controller
             [$hargaMin, $hargaMaks] = [$hargaMaks, $hargaMin];
         }
 
-        $urut = in_array($this->teks($request, 'urut'), ['termurah', 'termahal'], true)
+        $urut = in_array($this->teks($request, 'urut'), ['termurah', 'termahal', 'terbaik'], true)
             ? $this->teks($request, 'urut')
             : 'terbaru';
 
@@ -68,13 +68,16 @@ class KatalogController extends Controller
             $produk->where('harga', '<=', $hargaMaks);
         }
 
+        $total = (clone $produk)->count();
+
+        $produk->withCount('reviews')->withAvg('reviews', 'rating');
+
         match ($urut) {
             'termurah' => $produk->orderBy('harga')->orderByDesc('id'),
             'termahal' => $produk->orderByDesc('harga')->orderByDesc('id'),
+            'terbaik' => $produk->orderByDesc('reviews_avg_rating')->orderByDesc('reviews_count')->orderByDesc('id'),
             default => $produk->orderByDesc('id'),
         };
-
-        $total = (clone $produk)->count();
         $daftar = $produk->take($batas)->get();
 
         $kelompok = Kelompok::whereHas('shops', fn (Builder $toko) => $toko->where('status', Shop::TERVERIFIKASI))

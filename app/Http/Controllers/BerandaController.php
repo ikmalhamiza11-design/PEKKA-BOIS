@@ -16,6 +16,8 @@ class BerandaController extends Controller
 
         $produk = Product::tampil()
             ->with(['shop.kelompok', 'category'])
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
             ->latest()
             ->take(8)
             ->get();
@@ -23,6 +25,8 @@ class BerandaController extends Controller
         $unggulan = Product::tampil()
             ->where('unggulan', true)
             ->with(['shop.kelompok', 'category'])
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
             ->latest()
             ->take(6)
             ->get();

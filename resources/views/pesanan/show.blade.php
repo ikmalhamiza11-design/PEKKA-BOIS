@@ -34,6 +34,16 @@
                             <span class="font-bold">{{ $item->nama }}</span>
                         @endif
                         <p class="text-ink/70">{{ Rupiah::format($item->harga) }} &times; {{ $item->jumlah }}</p>
+                        @if ($pesanan->status === \App\Models\Order::SELESAI && $item->product_id)
+                            <div class="mt-2 flex flex-wrap items-center gap-2">
+                                @if ($item->review)
+                                    <x-bintang :nilai="$item->review->rating" :angka="false" :kecil="true" />
+                                    <a href="{{ route('ulasan.form', [$pesanan->id, $item->id]) }}" class="text-xs font-bold text-olive underline">Ubah ulasan</a>
+                                @else
+                                    <a href="{{ route('ulasan.form', [$pesanan->id, $item->id]) }}" class="inline-flex min-h-9 items-center rounded-full border border-olive/25 px-3 text-xs font-bold text-olive hover:bg-lime/30">Beri ulasan</a>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                     <span class="shrink-0 font-extrabold">{{ Rupiah::format($item->subtotal) }}</span>
                 </div>

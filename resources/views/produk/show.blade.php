@@ -41,6 +41,9 @@
                     <span class="rounded-full bg-lime/30 px-3 py-1 text-xs font-extrabold text-olive">{{ $produk->category->nama }}</span>
                     <h1 class="mt-3 text-3xl font-extrabold leading-tight">{{ $produk->nama }}</h1>
                     <p class="mt-2 text-3xl font-extrabold text-olive">{{ $produk->harga_rupiah }}</p>
+                    @if ($ringkasan['jumlah'] > 0)
+                        <a href="#ulasan" class="mt-2 inline-flex"><x-bintang :nilai="$ringkasan['rata']" :jumlah="$ringkasan['jumlah']" /></a>
+                    @endif
                     <p class="mt-2">
                         @if ($habis)
                             <span class="rounded-full bg-red-50 px-3 py-1 text-sm font-extrabold text-danger">Stok habis</span>
@@ -58,6 +61,9 @@
                             <span class="rounded-full bg-lime px-2.5 py-0.5 text-[0.7rem] font-extrabold text-ink">Terverifikasi</span>
                         </div>
                         <p class="text-sm text-ink/70">{{ $produk->shop->kelompok->nama }}</p>
+                        @if ($ringkasanToko['jumlah'] > 0)
+                            <div class="mt-1"><x-bintang :nilai="$ringkasanToko['rata']" :jumlah="$ringkasanToko['jumlah']" :kecil="true" /></div>
+                        @endif
                     </div>
                     <a href="{{ route('katalog', ['q' => $produk->shop->nama]) }}" class="shrink-0 rounded-full border border-olive/25 px-3 py-2 text-sm font-bold text-olive hover:bg-lime/30">Kunjungi Toko</a>
                 </div>
@@ -97,11 +103,11 @@
             </div>
         </div>
 
-        <section class="mt-8 rounded-2xl border border-olive/10 bg-paper p-4 sm:p-6" data-tab-grup>
+        <section class="mt-8 rounded-2xl border border-olive/10 bg-paper p-4 sm:p-6" id="ulasan" data-tab-grup>
             <div class="gulir-x flex gap-2" role="tablist" aria-label="Informasi produk">
                 <button type="button" role="tab" data-tab-tombol="deskripsi" aria-selected="true" class="shrink-0 rounded-full bg-olive px-4 py-2 text-sm font-bold text-white">Deskripsi</button>
                 <button type="button" role="tab" data-tab-tombol="info" aria-selected="false" class="shrink-0 rounded-full px-4 py-2 text-sm font-bold text-olive">Informasi Produk</button>
-                <button type="button" role="tab" data-tab-tombol="ulasan" aria-selected="false" class="shrink-0 rounded-full px-4 py-2 text-sm font-bold text-olive">Ulasan (0)</button>
+                <button type="button" role="tab" data-tab-tombol="ulasan" aria-selected="false" class="shrink-0 rounded-full px-4 py-2 text-sm font-bold text-olive">Ulasan ({{ $ringkasan['jumlah'] }})</button>
             </div>
 
             <div class="mt-4" role="tabpanel" data-tab-panel="deskripsi">
@@ -118,10 +124,53 @@
             </div>
 
             <div class="mt-4" role="tabpanel" data-tab-panel="ulasan" hidden>
-                <div class="flex flex-col items-center gap-2 py-6 text-center">
-                    <p class="text-lg font-extrabold">Belum ada ulasan</p>
-                    <p class="max-w-sm text-sm text-ink/70">Ulasan akan muncul setelah pembeli menyelesaikan pesanan produk ini.</p>
-                </div>
+                @if ($ringkasan['jumlah'] === 0)
+                    <div class="flex flex-col items-center gap-2 py-6 text-center">
+                        <p class="text-lg font-extrabold">Belum ada ulasan</p>
+                        <p class="max-w-sm text-sm text-ink/70">Ulasan akan muncul setelah pembeli menyelesaikan pesanan produk ini.</p>
+                    </div>
+                @else
+                    <div class="grid gap-6 sm:grid-cols-[14rem_1fr] sm:items-center">
+                        <div class="text-center sm:text-left">
+                            <p class="text-5xl font-extrabold text-olive">{{ number_format($ringkasan['rata'], 1, ',', '.') }}</p>
+                            <x-bintang :nilai="$ringkasan['rata']" :angka="false" />
+                            <p class="mt-1 text-sm text-ink/70">dari {{ $ringkasan['jumlah'] }} ulasan</p>
+                        </div>
+                        <div class="flex flex-col gap-1.5" aria-label="Sebaran penilaian">
+                            @foreach ($ringkasan['sebaran'] as $bintang => $banyak)
+                                @php $persen = round($banyak / $ringkasan['jumlah'] * 100); @endphp
+                                <div class="flex items-center gap-2 text-xs">
+                                    <span class="w-6 shrink-0 font-bold">{{ $bintang }}★</span>
+                                    <span class="h-2 flex-1 overflow-hidden rounded-full bg-ink/10"><span class="block h-full rounded-full bg-amber-500" style="width: {{ $persen }}%"></span></span>
+                                    <span class="w-6 shrink-0 text-right text-ink/60">{{ $banyak }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        @foreach ($ulasan as $item)
+                            <article class="border-t border-olive/10 py-4">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="font-bold">{{ $item->namaSamaran() }}</p>
+                                    <span class="text-xs text-ink/60">{{ $item->created_at->format('d/m/Y') }}</span>
+                                </div>
+                                <x-bintang :nilai="$item->rating" :angka="false" :kecil="true" />
+                                @if ($item->komentar)
+                                    <p class="mt-2 whitespace-pre-line text-ink/80">{{ $item->komentar }}</p>
+                                @endif
+                                @if ($item->balasan)
+                                    <div class="mt-3 rounded-xl bg-lime/15 p-3 text-sm">
+                                        <p class="font-bold text-olive">Balasan penjual</p>
+                                        <p class="mt-1 whitespace-pre-line text-ink/80">{{ $item->balasan }}</p>
+                                    </div>
+                                @endif
+                            </article>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-2">{{ $ulasan->links() }}</div>
+                @endif
             </div>
         </section>
 

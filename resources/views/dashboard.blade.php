@@ -42,10 +42,29 @@
             </section>
         @endif
 
+        @if ($ringkasanUlasan && $ringkasanUlasan['jumlah'] > 0)
+            <section class="card !p-3">
+                <p class="text-xs text-ink/70">Penilaian toko</p>
+                <x-bintang :nilai="$ringkasanUlasan['rata']" :jumlah="$ringkasanUlasan['jumlah']" />
+            </section>
+        @endif
+
         <div class="grid gap-3">
             <a href="{{ route('penjual.produk.index') }}" class="btn-primary">Kelola Produk</a>
             <a href="{{ route('penjual.produk.create') }}" class="btn-secondary">+ Tambah Produk</a>
-            <a href="{{ route('penjual.pesanan.index') }}" class="btn-secondary">Pesanan Masuk@if ($perluVerifikasi + $perluDiproses > 0) ({{ $perluVerifikasi + $perluDiproses }} perlu tindakan)@endif</a>
+            @php $perluTindakan = $perluVerifikasi + $perluDiproses; @endphp
+            <a href="{{ route('penjual.pesanan.index') }}" class="btn-secondary">
+                Pesanan Masuk
+                @if ($perluTindakan > 0)
+                    <span class="ml-2 rounded-full bg-danger px-2 py-0.5 text-xs font-extrabold text-white" aria-label="{{ $perluTindakan }} pesanan perlu tindakan">{{ $perluTindakan }}</span>
+                @endif
+            </a>
+            <a href="{{ route('penjual.ulasan.index') }}" class="btn-secondary">
+                Ulasan Pembeli
+                @if ($ulasanBelumDibalas > 0)
+                    <span class="ml-2 rounded-full bg-danger px-2 py-0.5 text-xs font-extrabold text-white" aria-label="{{ $ulasanBelumDibalas }} ulasan belum dibalas">{{ $ulasanBelumDibalas }}</span>
+                @endif
+            </a>
             <a href="{{ route('penjual.rekening.edit') }}" class="btn-secondary">Rekening Pembayaran</a>
         </div>
     @endif

@@ -4,7 +4,7 @@
 
 @section('isi')
     @php
-        $urutan = ['terbaru' => 'Terbaru', 'termurah' => 'Harga terendah', 'termahal' => 'Harga tertinggi'];
+        $urutan = ['terbaru' => 'Terbaru', 'termurah' => 'Harga terendah', 'termahal' => 'Harga tertinggi', 'terbaik' => 'Penilaian terbaik'];
         $tanpaKategori = \Illuminate\Support\Arr::except($parameter, ['kategori']);
     @endphp
 
