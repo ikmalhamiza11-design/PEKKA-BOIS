@@ -8,6 +8,10 @@
         <p class="mt-2 text-ink/70">Anda masuk sebagai {{ $user->labelPeran() }}.</p>
     </div>
 
+    @if (session('pesan'))
+        <x-alert tipe="sukses">{{ session('pesan') }}</x-alert>
+    @endif
+
     @if (session('status') === 'email-terverifikasi')
         <x-alert tipe="sukses">Email berhasil diverifikasi.</x-alert>
     @endif
@@ -20,16 +24,23 @@
         </section>
 
         @if ($shop->status === \App\Models\Shop::MENUNGGU)
-            <x-alert judul="Toko menunggu verifikasi">Produkmu belum tampil di katalog sampai admin kelompok memverifikasi tokomu.</x-alert>
+            <x-alert judul="Toko menunggu verifikasi">Produkmu belum tampil di katalog sampai operator PEKKA memverifikasi tokomu.</x-alert>
         @elseif ($shop->status === \App\Models\Shop::DITOLAK)
             <x-alert tipe="galat" judul="Toko belum disetujui">
                 @if ($shop->alasan_penolakan)
                     Alasan: {{ $shop->alasan_penolakan }}
                 @else
-                    Hubungi admin kelompok PEKKA untuk menanyakan alasannya.
+                    Hubungi operator PEKKA untuk menanyakan alasannya.
                 @endif
             </x-alert>
         @endif
+
+        @unless ($shop->punyaRekening())
+            <x-alert judul="Rekening pembayaran belum diisi">
+                Pembeli belum bisa membayar pesanan ke tokomu sebelum rekening terisi.
+                <a href="{{ route('penjual.rekening.edit') }}" class="font-extrabold underline">Isi rekening sekarang</a>
+            </x-alert>
+        @endunless
 
         @if ($ringkasan)
             <section class="grid grid-cols-3 gap-3 text-center">
@@ -74,6 +85,17 @@
             <a href="{{ route('penjual.rekening.edit') }}" class="btn-secondary">Rekening Pembayaran</a>
         </div>
     @endif
+
+    @unless ($shop)
+        <div class="grid gap-3">
+            <a href="{{ route('beranda') }}" class="btn-primary">Ke Beranda</a>
+            <a href="{{ route('katalog') }}" class="btn-secondary">Lihat Katalog</a>
+            <a href="{{ route('pesanan') }}" class="btn-secondary">Pesanan Saya</a>
+            <a href="{{ route('keranjang') }}" class="btn-secondary">Keranjang</a>
+        </div>
+    @else
+        <a href="{{ route('beranda') }}" class="btn-secondary">Ke Beranda</a>
+    @endunless
 
     <a href="{{ route('profil') }}" class="btn-secondary mt-auto">Profil Saya</a>
 

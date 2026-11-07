@@ -4,13 +4,17 @@ use App\Http\Controllers\Admin\AdminKelompokController;
 use App\Http\Controllers\Admin\DasborController;
 use App\Http\Controllers\Admin\KegiatanController as KegiatanAdminController;
 use App\Http\Controllers\Admin\KelompokController;
+use App\Http\Controllers\Admin\LaporanAkunController;
+use App\Http\Controllers\Admin\OperatorController;
 use App\Http\Controllers\Admin\PanduanController as PanduanAdminController;
 use App\Http\Controllers\Admin\TokoController;
 use App\Http\Controllers\Admin\UlasanController as UlasanAdminController;
+use App\Http\Controllers\Auth\BantuanMasukController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\SandiWajibController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
@@ -62,8 +66,14 @@ Route::middleware('guest')->group(function () {
     Route::post('/atur-ulang-kata-sandi', [PasswordResetController::class, 'update'])->middleware('throttle:6,1,password.update.')->name('password.update');
 });
 
+Route::get('/bantuan-masuk', [BantuanMasukController::class, 'create'])->name('bantuan.masuk');
+Route::post('/bantuan-masuk', [BantuanMasukController::class, 'store'])->middleware('throttle:5,1,bantuan.masuk.simpan.')->name('bantuan.masuk.simpan');
+
 Route::middleware('auth')->group(function () {
     Route::post('/keluar', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::get('/sandi-baru', [SandiWajibController::class, 'create'])->name('sandi.wajib');
+    Route::put('/sandi-baru', [SandiWajibController::class, 'update'])->middleware('throttle:6,1,sandi.wajib.simpan.')->name('sandi.wajib.simpan');
 
     Route::get('/email/verifikasi', [EmailVerificationController::class, 'notice'])->name('verification.notice');
     Route::get('/email/verifikasi/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
@@ -76,6 +86,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
         Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+        Route::put('/profil/foto', [ProfilController::class, 'foto'])->middleware('throttle:10,1,profil.foto.')->name('profil.foto');
+        Route::delete('/profil/foto', [ProfilController::class, 'hapusFoto'])->name('profil.foto.hapus');
         Route::put('/profil/email', [ProfilController::class, 'email'])->middleware('throttle:6,1,profil.email.')->name('profil.email');
         Route::put('/profil/kata-sandi', [ProfilController::class, 'sandi'])->middleware('throttle:6,1,profil.sandi.')->name('profil.sandi');
 
@@ -138,6 +150,16 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::patch('/ulasan/{id}/tampilkan', [UlasanAdminController::class, 'tampilkan'])->whereNumber('id')->name('ulasan.tampilkan');
 
     Route::middleware('admin.dinas')->group(function () {
+        Route::get('/laporan', [LaporanAkunController::class, 'index'])->name('laporan.index');
+        Route::post('/laporan/{id}/cocokkan', [LaporanAkunController::class, 'cocokkan'])->whereNumber('id')->name('laporan.cocokkan');
+        Route::post('/laporan/{id}/sandi-sementara', [LaporanAkunController::class, 'sandiSementara'])->whereNumber('id')->middleware('throttle:20,1,laporan.sandi.')->name('laporan.sandi');
+        Route::post('/laporan/{id}/verifikasi-email', [LaporanAkunController::class, 'verifikasiEmail'])->whereNumber('id')->name('laporan.verifikasi');
+        Route::patch('/laporan/{id}/selesai', [LaporanAkunController::class, 'selesai'])->whereNumber('id')->name('laporan.selesai');
+
+        Route::get('/operator', [OperatorController::class, 'index'])->name('operator.index');
+        Route::post('/operator', [OperatorController::class, 'store'])->middleware('throttle:20,1,operator.store.')->name('operator.store');
+        Route::delete('/operator/{id}', [OperatorController::class, 'destroy'])->whereNumber('id')->name('operator.destroy');
+
         Route::get('/kelompok', [KelompokController::class, 'index'])->name('kelompok.index');
         Route::post('/kelompok', [KelompokController::class, 'store'])->name('kelompok.store');
         Route::post('/kelompok/impor', [KelompokController::class, 'impor'])->name('kelompok.impor');

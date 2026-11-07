@@ -12,7 +12,11 @@
     @endif
 
     <section class="card flex items-center gap-4">
-        <span class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-olive text-2xl font-extrabold text-lime" aria-hidden="true">{{ $inisial }}</span>
+        @if ($user->fotoUrl())
+            <img src="{{ $user->fotoUrl() }}" alt="Foto profil {{ $user->name }}" class="h-16 w-16 shrink-0 rounded-full object-cover">
+        @else
+            <span class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-olive text-2xl font-extrabold text-lime" aria-hidden="true">{{ $inisial }}</span>
+        @endif
         <div class="min-w-0">
             <p class="truncate text-lg font-extrabold">{{ $user->name }}</p>
             <p class="break-all text-sm text-ink/70">{{ $user->email }}</p>
@@ -27,6 +31,30 @@
             <p class="text-sm text-ink/70">Kelompok {{ $shop->kelompok->nama }}</p>
             <p class="mt-2 inline-flex rounded-full bg-lime/30 px-3 py-1 text-xs font-bold text-olive">Status toko: {{ ucfirst($shop->status) }}</p>
         </section>
+    @endif
+
+    <form method="POST" action="{{ route('profil.foto') }}" enctype="multipart/form-data" class="card flex flex-col gap-3" novalidate>
+        @csrf
+        @method('PUT')
+        <h2 class="text-lg font-extrabold">Foto profil</h2>
+        <div>
+            <label for="foto" class="mb-1.5 block text-sm font-bold">Pilih foto</label>
+            <input id="foto" type="file" name="foto" accept="image/jpeg,image/png,image/webp" @class(['input', 'input-galat' => $errors->has('foto')])>
+            @error('foto')
+                <p class="mt-1.5 text-sm font-semibold text-danger">{{ $message }}</p>
+            @else
+                <p class="mt-1.5 text-xs text-ink/60">JPG, PNG, atau WebP, maksimal 3 MB.</p>
+            @enderror
+        </div>
+        <button type="submit" class="btn-primary">Simpan Foto</button>
+    </form>
+
+    @if ($user->foto)
+        <form method="POST" action="{{ route('profil.foto.hapus') }}" onsubmit="return confirm('Hapus foto profil?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-secondary">Hapus Foto Profil</button>
+        </form>
     @endif
 
     <form method="POST" action="{{ route('profil.update') }}" class="card flex flex-col gap-4" novalidate>

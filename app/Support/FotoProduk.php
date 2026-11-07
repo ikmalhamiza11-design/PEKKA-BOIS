@@ -13,18 +13,18 @@ class FotoProduk
 
     public const KUALITAS = 82;
 
-    public static function simpan(UploadedFile $berkas): string
+    public static function simpan(UploadedFile $berkas, string $folder = 'produk', int $lebarMaks = self::LEBAR_MAKSIMAL): string
     {
-        $isi = static::olah($berkas);
+        $isi = static::olah($berkas, $lebarMaks);
 
         if ($isi !== null) {
-            $nama = 'produk/'.Str::uuid().'.jpg';
+            $nama = $folder.'/'.Str::uuid().'.jpg';
             Storage::disk('public')->put($nama, $isi);
 
             return $nama;
         }
 
-        $nama = 'produk/'.Str::uuid().'.'.($berkas->guessExtension() ?: 'jpg');
+        $nama = $folder.'/'.Str::uuid().'.'.($berkas->guessExtension() ?: 'jpg');
         Storage::disk('public')->put($nama, file_get_contents($berkas->getRealPath()));
 
         return $nama;
@@ -37,7 +37,7 @@ class FotoProduk
         }
     }
 
-    protected static function olah(UploadedFile $berkas): ?string
+    protected static function olah(UploadedFile $berkas, int $lebarMaks): ?string
     {
         if (! function_exists('imagecreatefromstring') || ! function_exists('imagejpeg')) {
             return null;
@@ -57,8 +57,8 @@ class FotoProduk
 
         $gambar = static::putar($gambar, $berkas);
 
-        if (imagesx($gambar) > self::LEBAR_MAKSIMAL) {
-            $kecil = imagescale($gambar, self::LEBAR_MAKSIMAL, -1, IMG_BICUBIC);
+        if (imagesx($gambar) > $lebarMaks) {
+            $kecil = imagescale($gambar, $lebarMaks, -1, IMG_BICUBIC);
 
             if ($kecil instanceof GdImage) {
                 $gambar = $kecil;

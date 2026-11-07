@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -39,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'wajib_ganti_sandi' => 'boolean',
         ];
     }
 
@@ -60,6 +62,23 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function inisial(): string
+    {
+        return Str::of($this->name)->explode(' ')->filter()->take(2)->map(fn ($kata) => Str::upper(Str::substr($kata, 0, 1)))->implode('');
+    }
+
+    public function fotoUrl(): ?string
+    {
+        return $this->foto ? asset('storage/'.$this->foto) : null;
+    }
+
+    public function halamanAwal(): string
+    {
+        return $this->role === self::PENJUAL || $this->adalahAdmin()
+            ? route('dashboard')
+            : route('beranda');
     }
 
     public function adalahAdminDinas(): bool

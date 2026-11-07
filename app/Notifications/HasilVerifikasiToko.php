@@ -25,9 +25,15 @@ class HasilVerifikasiToko extends Notification
         $pesan = (new MailMessage)->greeting('Halo, '.$notifiable->name.'!');
 
         if ($this->toko->status === Shop::TERVERIFIKASI) {
-            return $pesan
+            $surat = $pesan
                 ->subject('Toko Anda Sudah Terverifikasi')
-                ->line('Kabar baik! Toko "'.$this->toko->nama.'" sudah diverifikasi oleh admin PEKKA. Produk aktif Anda kini tampil di katalog.')
+                ->line('Kabar baik! Toko "'.$this->toko->nama.'" sudah diverifikasi oleh admin PEKKA. Produk aktif Anda kini tampil di katalog.');
+
+            if (! $this->toko->punyaRekening()) {
+                $surat->line('Langkah berikutnya: isi data rekening di menu "Rekening Pembayaran" agar pembeli bisa membayar pesanan ke toko Anda.');
+            }
+
+            return $surat
                 ->action('Buka Dasbor Penjual', route('dashboard'))
                 ->salutation('Salam, Tim PEKKA Bogor Istimewa');
         }
@@ -36,7 +42,7 @@ class HasilVerifikasiToko extends Notification
             ->subject('Toko Anda Belum Dapat Disetujui')
             ->line('Toko "'.$this->toko->nama.'" belum dapat disetujui oleh admin PEKKA.')
             ->line('Alasan: '.$this->toko->alasan_penolakan)
-            ->line('Silakan hubungi admin kelompok PEKKA Anda untuk melengkapi atau memperbaiki data toko.')
+            ->line('Silakan hubungi operator PEKKA untuk melengkapi atau memperbaiki data toko.')
             ->action('Buka Dasbor Penjual', route('dashboard'))
             ->salutation('Salam, Tim PEKKA Bogor Istimewa');
     }

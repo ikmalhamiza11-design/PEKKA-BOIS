@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\KirimEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,9 +39,9 @@ class EmailVerificationController extends Controller
             return redirect()->route('dashboard');
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $terkirim = KirimEmail::coba(fn () => $request->user()->sendEmailVerificationNotification());
 
-        return back()->with('status', 'tautan-terkirim');
+        return back()->with('status', $terkirim ? 'tautan-terkirim' : 'email-gagal');
     }
 
     public function change(Request $request): RedirectResponse
@@ -60,8 +61,8 @@ class EmailVerificationController extends Controller
             'email_verified_at' => null,
         ])->save();
 
-        $user->sendEmailVerificationNotification();
+        $terkirim = KirimEmail::coba(fn () => $user->sendEmailVerificationNotification());
 
-        return back()->with('status', 'email-diganti');
+        return back()->with('status', $terkirim ? 'email-diganti' : 'email-gagal');
     }
 }

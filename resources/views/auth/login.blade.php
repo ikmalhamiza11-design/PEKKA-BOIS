@@ -29,4 +29,6 @@
     </div>
 
     <a href="{{ route('daftar') }}" class="btn-secondary">Daftar Akun Baru</a>
+
+    <a href="{{ route('bantuan.masuk') }}" class="text-center text-sm font-bold text-olive underline">Tidak bisa masuk dan email tidak bisa dibuka?</a>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\KirimEmail;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,9 +26,9 @@ class PasswordResetController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        Password::sendResetLink($request->only('email'));
+        $terkirim = KirimEmail::coba(fn () => Password::sendResetLink($request->only('email')));
 
-        return back()->with('status', 'tautan-reset-terkirim');
+        return back()->with('status', $terkirim ? 'tautan-reset-terkirim' : 'email-gagal');
     }
 
     public function edit(Request $request, string $token): View
@@ -52,6 +53,7 @@ class PasswordResetController extends Controller
                 $user->forceFill([
                     'password' => $password,
                     'remember_token' => Str::random(60),
+                    'wajib_ganti_sandi' => false,
                 ])->save();
 
                 event(new PasswordReset($user));

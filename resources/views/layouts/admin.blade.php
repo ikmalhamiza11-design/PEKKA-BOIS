@@ -22,7 +22,8 @@
 
         if ($admin->adalahAdminDinas()) {
             $menu[] = ['admin.kelompok.index', 'Kelompok', 'admin.kelompok.*', 0];
-            $menu[] = ['admin.admin-kelompok.index', 'Admin Kelompok', 'admin.admin-kelompok.*', 0];
+            $menu[] = ['admin.laporan.index', 'Laporan Masuk', 'admin.laporan.*', \App\Models\LaporanAkun::baru()->count()];
+            $menu[] = ['admin.operator.index', 'Operator', 'admin.operator.*', 0];
             $menu[] = ['admin.kegiatan.index', 'Kegiatan', 'admin.kegiatan.*', 0];
             $menu[] = ['admin.panduan.index', 'Panduan', 'admin.panduan.*', 0];
         }

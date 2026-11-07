@@ -69,17 +69,20 @@ class AksesAdminTest extends TestCase
         $this->assertDatabaseMissing('kelompoks', ['nama' => 'Baru']);
     }
 
-    public function test_menu_kelompok_dan_admin_kelompok_hanya_tampil_untuk_dinas(): void
+    public function test_menu_kelompok_operator_dan_laporan_hanya_tampil_untuk_dinas(): void
     {
         $this->actingAs($this->buatAdminDinas())
             ->get(route('admin.dasbor'))
             ->assertSee(route('admin.kelompok.index'), false)
-            ->assertSee(route('admin.admin-kelompok.index'), false);
+            ->assertSee(route('admin.operator.index'), false)
+            ->assertSee(route('admin.laporan.index'), false)
+            ->assertDontSee(route('admin.admin-kelompok.index'), false);
 
         $this->actingAs($this->buatAdminKelompok())
             ->get(route('admin.dasbor'))
             ->assertDontSee(route('admin.kelompok.index'), false)
-            ->assertDontSee(route('admin.admin-kelompok.index'), false);
+            ->assertDontSee(route('admin.operator.index'), false)
+            ->assertDontSee(route('admin.laporan.index'), false);
     }
 
     public function test_dasbor_umum_mengarahkan_admin_ke_panel_admin(): void

@@ -15,6 +15,10 @@
             <x-alert tipe="sukses">Tautan verifikasi baru sudah dikirim.</x-alert>
         @endif
 
+        @if (session('status') === 'email-gagal')
+            <x-alert tipe="galat" judul="Email belum bisa dikirim">Ada gangguan saat mengirim email. Tunggu sebentar lalu tekan "Kirim ulang email", atau lapor ke operator.</x-alert>
+        @endif
+
         @if (session('status') === 'email-diganti')
             <x-alert tipe="sukses">Email diganti. Tautan verifikasi dikirim ke alamat yang baru.</x-alert>
         @endif
@@ -42,6 +46,8 @@
                 <button type="submit" class="btn-secondary">Simpan dan kirim ulang</button>
             </form>
         </details>
+
+        <a href="{{ route('bantuan.masuk') }}" class="text-sm font-bold text-olive underline">Email tidak bisa dibuka? Lapor ke operator</a>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf

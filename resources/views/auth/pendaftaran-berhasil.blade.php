@@ -8,7 +8,7 @@
             <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
         </span>
         <h1 class="text-3xl font-extrabold">Pendaftaran Berhasil!</h1>
-        <p class="mt-2 font-semibold text-success">Tokomu sedang menunggu verifikasi admin kelompok.</p>
+        <p class="mt-2 font-semibold text-success">Tokomu sedang menunggu verifikasi operator PEKKA.</p>
     </div>
 
     <section class="card flex flex-col gap-4">
@@ -29,11 +29,15 @@
             </li>
             <li class="flex gap-3">
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lime font-extrabold" aria-hidden="true">2</span>
-                <span><span class="block font-extrabold">Validasi admin kelompok</span>Pengurus kelompok PEKKA memeriksa data usahamu sebelum toko tampil di katalog.</span>
+                <span><span class="block font-extrabold">Validasi operator</span>Operator PEKKA memeriksa data usahamu sebelum toko tampil di katalog.</span>
             </li>
             <li class="flex gap-3">
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-olive/15 font-extrabold text-olive" aria-hidden="true">3</span>
                 <span><span class="block font-extrabold">Kabar lewat email</span>Kamu akan diberi tahu lewat email setelah tokomu terverifikasi.</span>
+            </li>
+            <li class="flex gap-3">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-olive/15 font-extrabold text-olive" aria-hidden="true">4</span>
+                <span><span class="block font-extrabold">Isi rekening pembayaran</span>Setelah masuk, buka menu "Rekening Pembayaran" supaya pembeli bisa membayar pesanannya.</span>
             </li>
         </ol>
     </section>

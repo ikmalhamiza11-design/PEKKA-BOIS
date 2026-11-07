@@ -52,7 +52,12 @@
                     @endif
                 </a>
                 @auth
-                    <a href="{{ route('dashboard') }}" class="rounded-full bg-olive px-4 py-2 text-sm font-extrabold text-white hover:bg-olive-dark">{{ \Illuminate\Support\Str::limit(auth()->user()->name, 12, '') }}</a>
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 rounded-full bg-olive py-2 pr-4 text-sm font-extrabold text-white hover:bg-olive-dark {{ auth()->user()->fotoUrl() ? 'pl-2' : 'pl-4' }}">
+                        @if (auth()->user()->fotoUrl())
+                            <img src="{{ auth()->user()->fotoUrl() }}" alt="" class="h-7 w-7 rounded-full object-cover">
+                        @endif
+                        {{ \Illuminate\Support\Str::limit(auth()->user()->name, 12, '') }}
+                    </a>
                 @else
                     <a href="{{ route('login') }}" class="rounded-full bg-olive px-4 py-2 text-sm font-extrabold text-white hover:bg-olive-dark">Masuk</a>
                 @endauth

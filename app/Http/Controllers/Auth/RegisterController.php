@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kelompok;
 use App\Models\Shop;
 use App\Models\User;
+use App\Support\KirimEmail;
 use App\Support\Telepon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -112,12 +113,13 @@ class RegisterController extends Controller
 
     private function selesaiDaftar(Request $request, User $user): RedirectResponse
     {
-        event(new Registered($user));
+        $terkirim = KirimEmail::coba(fn () => event(new Registered($user)));
 
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('verification.notice');
+        return redirect()->route('verification.notice')
+            ->with($terkirim ? [] : ['status' => 'email-gagal']);
     }
 
     private function aturanTelepon(): \Closure
