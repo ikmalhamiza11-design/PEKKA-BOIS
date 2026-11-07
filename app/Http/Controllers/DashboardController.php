@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -22,6 +23,8 @@ class DashboardController extends Controller
             'user' => $user,
             'shop' => $toko?->load('kelompok'),
             'ringkasan' => $ringkasan,
+            'perluDiproses' => $toko ? $toko->orders()->whereIn('status', [Order::DIBAYAR, Order::DIPROSES])->count() : 0,
+            'perluVerifikasi' => $toko ? $toko->orders()->where('status', Order::MENUNGGU_VERIFIKASI)->count() : 0,
         ]);
     }
 }

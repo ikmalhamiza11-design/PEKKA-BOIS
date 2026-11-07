@@ -9,7 +9,11 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\Penjual\PembayaranController as PembayaranPenjualController;
+use App\Http\Controllers\Penjual\PesananController as PesananPenjualController;
 use App\Http\Controllers\Penjual\ProdukController as ProdukPenjualController;
+use App\Http\Controllers\Penjual\RekeningController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfilController;
@@ -76,6 +80,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
         Route::get('/pesanan/{id}', [PesananController::class, 'show'])->whereNumber('id')->name('pesanan.show');
         Route::patch('/pesanan/{id}/batal', [PesananController::class, 'batal'])->whereNumber('id')->name('pesanan.batal');
+
+        Route::patch('/pesanan/{id}/diterima', [PesananController::class, 'diterima'])->whereNumber('id')->name('pesanan.diterima');
+        Route::post('/pesanan/{id}/pembayaran', [PembayaranController::class, 'store'])->whereNumber('id')->middleware('throttle:10,1')->name('pembayaran.store');
+        Route::get('/pembayaran/{id}/bukti', [PembayaranController::class, 'bukti'])->whereNumber('id')->name('pembayaran.bukti');
     });
 });
 
@@ -87,4 +95,16 @@ Route::middleware(['auth', 'verified', 'penjual'])->prefix('penjual')->name('pen
     Route::put('/produk/{id}', [ProdukPenjualController::class, 'update'])->whereNumber('id')->name('produk.update');
     Route::patch('/produk/{id}/status', [ProdukPenjualController::class, 'status'])->whereNumber('id')->name('produk.status');
     Route::delete('/produk/{id}', [ProdukPenjualController::class, 'destroy'])->whereNumber('id')->name('produk.destroy');
+
+    Route::get('/rekening', [RekeningController::class, 'edit'])->name('rekening.edit');
+    Route::put('/rekening', [RekeningController::class, 'update'])->middleware('throttle:10,1')->name('rekening.update');
+
+    Route::get('/pesanan', [PesananPenjualController::class, 'index'])->name('pesanan.index');
+    Route::get('/pesanan/{id}', [PesananPenjualController::class, 'show'])->whereNumber('id')->name('pesanan.show');
+
+    Route::patch('/pesanan/{id}/proses', [PesananPenjualController::class, 'proses'])->whereNumber('id')->name('pesanan.proses');
+    Route::patch('/pesanan/{id}/kirim', [PesananPenjualController::class, 'kirim'])->whereNumber('id')->name('pesanan.kirim');
+
+    Route::patch('/pembayaran/{id}/terima', [PembayaranPenjualController::class, 'terima'])->whereNumber('id')->name('pembayaran.terima');
+    Route::patch('/pembayaran/{id}/tolak', [PembayaranPenjualController::class, 'tolak'])->whereNumber('id')->name('pembayaran.tolak');
 });

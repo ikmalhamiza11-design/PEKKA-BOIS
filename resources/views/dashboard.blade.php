@@ -45,6 +45,8 @@
         <div class="grid gap-3">
             <a href="{{ route('penjual.produk.index') }}" class="btn-primary">Kelola Produk</a>
             <a href="{{ route('penjual.produk.create') }}" class="btn-secondary">+ Tambah Produk</a>
+            <a href="{{ route('penjual.pesanan.index') }}" class="btn-secondary">Pesanan Masuk@if ($perluVerifikasi + $perluDiproses > 0) ({{ $perluVerifikasi + $perluDiproses }} perlu tindakan)@endif</a>
+            <a href="{{ route('penjual.rekening.edit') }}" class="btn-secondary">Rekening Pembayaran</a>
         </div>
     @endif
 

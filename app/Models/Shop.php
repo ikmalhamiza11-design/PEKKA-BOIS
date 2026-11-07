@@ -16,6 +16,9 @@ class Shop extends Model
         'nama',
         'kelompok_id',
         'status',
+        'nama_bank',
+        'nomor_rekening',
+        'atas_nama',
     ];
 
     public function user(): BelongsTo
@@ -31,5 +34,15 @@ class Shop extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function punyaRekening(): bool
+    {
+        return filled($this->nama_bank) && filled($this->nomor_rekening) && filled($this->atas_nama);
     }
 }

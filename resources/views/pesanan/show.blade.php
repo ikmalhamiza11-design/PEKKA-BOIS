@@ -18,13 +18,8 @@
             <span @class(['rounded-full px-3 py-1 text-sm font-extrabold', 'bg-lime/30 text-olive' => $pesanan->status !== \App\Models\Order::DIBATALKAN, 'bg-ink/10 text-ink/70' => $pesanan->status === \App\Models\Order::DIBATALKAN])>{{ $pesanan->labelStatus() }}</span>
         </div>
 
-        @if ($pesanan->bisaDibatalkan())
-            <div class="mt-4">
-                <x-alert judul="Menunggu pembayaran">
-                    Pembayaran lewat transfer bank akan tersedia pada tahap berikutnya. Stok produk ini sudah ditahan untukmu. Kamu bisa membatalkan pesanan selama belum dibayar.
-                </x-alert>
-            </div>
-        @endif
+        @include('pesanan.pembayaran')
+        @include('pesanan.pengiriman')
 
         <section class="card mt-4 !p-4">
             <p class="font-extrabold">{{ $pesanan->shop->nama }}</p>

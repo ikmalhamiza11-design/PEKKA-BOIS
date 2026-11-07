@@ -36,7 +36,7 @@
                 </div>
 
                 <x-alert>
-                    Pembayaran dilakukan lewat transfer bank dan diverifikasi admin. Fitur pembayaran akan dibuka pada tahap berikutnya. Stok produkmu sudah ditahan begitu pesanan dibuat.
+                    Pembayaran dilakukan lewat transfer bank ke rekening penjual, lalu kamu mengunggah bukti transfernya di halaman pesanan. Stok produkmu sudah ditahan begitu pesanan dibuat.
                 </x-alert>
             </form>
 
