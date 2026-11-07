@@ -6,6 +6,7 @@
     @php
         $habis = $produk->stok < 1;
         $maks = max($produk->stok, 1);
+        $milikSendiri = auth()->check() && auth()->user()->shop?->id === $produk->shop_id;
     @endphp
 
     <div class="mx-auto max-w-6xl px-4 pb-36 pt-4 lg:pb-12 lg:pt-8">
@@ -69,7 +70,7 @@
                         </div>
                         <div data-stepper data-maks="{{ $maks }}" data-harga="{{ $produk->harga }}" class="inline-flex items-center rounded-full border border-olive/25 bg-cream/60">
                             <button type="button" data-stepper-kurang aria-label="Kurangi jumlah" @disabled($habis) class="flex h-11 w-11 items-center justify-center text-xl font-extrabold text-olive disabled:opacity-40">-</button>
-                            <input data-stepper-nilai type="number" min="1" max="{{ $maks }}" value="{{ $habis ? 0 : 1 }}" aria-label="Jumlah pesanan" @disabled($habis) class="w-14 bg-transparent text-center font-extrabold focus:outline-none">
+                            <input data-stepper-nilai form="form-keranjang" name="jumlah" type="number" min="1" max="{{ $maks }}" value="{{ $habis ? 0 : 1 }}" aria-label="Jumlah pesanan" @disabled($habis) class="w-14 bg-transparent text-center font-extrabold focus:outline-none">
                             <button type="button" data-stepper-tambah aria-label="Tambah jumlah" @disabled($habis) class="flex h-11 w-11 items-center justify-center text-xl font-extrabold text-olive disabled:opacity-40">+</button>
                         </div>
                     </div>
@@ -80,7 +81,15 @@
                 </div>
 
                 <div class="hidden gap-3 lg:flex">
-                    <button type="button" disabled aria-disabled="true" title="Keranjang segera hadir" class="btn-primary flex-1">{{ $habis ? 'Stok habis' : '+ Keranjang' }}</button>
+                    @if ($habis)
+                        <button type="button" disabled aria-disabled="true" class="btn-primary flex-1">Stok habis</button>
+                    @elseif ($milikSendiri)
+                        <button type="button" disabled aria-disabled="true" class="btn-primary flex-1">Produk Anda</button>
+                    @elseif (auth()->check())
+                        <button type="submit" form="form-keranjang" class="btn-primary flex-1">+ Keranjang</button>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-primary flex-1">Masuk untuk membeli</a>
+                    @endif
                     <button type="button" disabled aria-disabled="true" aria-label="Simpan ke favorit" title="Favorit segera hadir" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-olive/25 text-olive opacity-60">
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
                     </button>
@@ -139,6 +148,21 @@
             <p class="font-extrabold text-olive" data-subtotal>{{ $habis ? 'Rp 0' : $produk->harga_rupiah }}</p>
             <p class="text-xs text-ink/60" data-jumlah-item>{{ $habis ? '0 item' : '1 item' }}</p>
         </div>
-        <button type="button" disabled aria-disabled="true" title="Keranjang segera hadir" class="btn-primary ml-auto max-w-[12rem]">{{ $habis ? 'Stok habis' : '+ Keranjang' }}</button>
+        @if ($habis)
+            <button type="button" disabled aria-disabled="true" class="btn-primary ml-auto max-w-[12rem]">Stok habis</button>
+        @elseif ($milikSendiri)
+            <button type="button" disabled aria-disabled="true" class="btn-primary ml-auto max-w-[12rem]">Produk Anda</button>
+        @elseif (auth()->check())
+            <button type="submit" form="form-keranjang" class="btn-primary ml-auto max-w-[12rem]">+ Keranjang</button>
+        @else
+            <a href="{{ route('login') }}" class="btn-primary ml-auto max-w-[12rem]">Masuk untuk membeli</a>
+        @endif
     </div>
+
+    @auth
+        <form id="form-keranjang" method="POST" action="{{ route('keranjang.tambah') }}" class="hidden">
+            @csrf
+            <input type="hidden" name="product_id" value="{{ $produk->id }}">
+        </form>
+    @endauth
 @endsection

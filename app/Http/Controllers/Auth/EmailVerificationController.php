@@ -47,6 +47,10 @@ class EmailVerificationController extends Controller
     {
         $user = $request->user();
 
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('profil');
+        }
+
         $data = $request->validate([
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
         ]);

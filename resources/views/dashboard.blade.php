@@ -18,9 +18,39 @@
             <p class="text-sm text-ink/70">Kelompok {{ $shop->kelompok->label() }}</p>
             <p class="mt-2 inline-flex rounded-full bg-lime/30 px-3 py-1 text-xs font-bold text-olive">Status toko: {{ ucfirst($shop->status) }}</p>
         </section>
+
+        @if ($shop->status === \App\Models\Shop::MENUNGGU)
+            <x-alert judul="Toko menunggu verifikasi">Produkmu belum tampil di katalog sampai admin kelompok memverifikasi tokomu.</x-alert>
+        @elseif ($shop->status === \App\Models\Shop::DITOLAK)
+            <x-alert tipe="galat" judul="Toko belum disetujui">Hubungi admin kelompok PEKKA untuk menanyakan alasannya.</x-alert>
+        @endif
+
+        @if ($ringkasan)
+            <section class="grid grid-cols-3 gap-3 text-center">
+                <div class="card !p-3">
+                    <p class="text-2xl font-extrabold text-olive">{{ $ringkasan['total'] }}</p>
+                    <p class="text-xs text-ink/70">Produk</p>
+                </div>
+                <div class="card !p-3">
+                    <p class="text-2xl font-extrabold text-olive">{{ $ringkasan['aktif'] }}</p>
+                    <p class="text-xs text-ink/70">Aktif</p>
+                </div>
+                <div class="card !p-3">
+                    <p class="text-2xl font-extrabold text-danger">{{ $ringkasan['habis'] }}</p>
+                    <p class="text-xs text-ink/70">Stok habis</p>
+                </div>
+            </section>
+        @endif
+
+        <div class="grid gap-3">
+            <a href="{{ route('penjual.produk.index') }}" class="btn-primary">Kelola Produk</a>
+            <a href="{{ route('penjual.produk.create') }}" class="btn-secondary">+ Tambah Produk</a>
+        </div>
     @endif
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-auto">
+    <a href="{{ route('profil') }}" class="btn-secondary mt-auto">Profil Saya</a>
+
+    <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button type="submit" class="btn-secondary">Keluar</button>
     </form>

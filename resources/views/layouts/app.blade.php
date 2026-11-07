@@ -19,6 +19,7 @@
             ['panduan', 'Panduan'],
         ];
         $cocok = fn (string $rute) => request()->routeIs(...($rute === 'katalog' ? ['katalog', 'produk.*'] : [$rute]));
+        $jumlahKeranjang = auth()->check() ? auth()->user()->keranjang()->count() : 0;
     @endphp
 
     <header class="sticky top-0 z-30 border-b border-olive/10 bg-cream/90 backdrop-blur">
@@ -44,8 +45,11 @@
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="m12 6 1 2.5 2.5 1-2.5 1L12 13l-1-2.5-2.5-1 2.5-1z"/></svg>
                     Tanya Sahabat PEKKA
                 </a>
-                <a href="{{ route('keranjang') }}" class="flex h-11 w-11 items-center justify-center rounded-full text-olive hover:bg-lime/30" aria-label="Keranjang belanja">
+                <a href="{{ route('keranjang') }}" class="relative flex h-11 w-11 items-center justify-center rounded-full text-olive hover:bg-lime/30" aria-label="Keranjang belanja{{ $jumlahKeranjang ? ' ('.$jumlahKeranjang.' produk)' : '' }}">
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+                    @if ($jumlahKeranjang > 0)
+                        <span class="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[0.65rem] font-extrabold text-white" aria-hidden="true">{{ $jumlahKeranjang }}</span>
+                    @endif
                 </a>
                 @auth
                     <a href="{{ route('dashboard') }}" class="rounded-full bg-olive px-4 py-2 text-sm font-extrabold text-white hover:bg-olive-dark">{{ \Illuminate\Support\Str::limit(auth()->user()->name, 12, '') }}</a>
@@ -57,6 +61,20 @@
     </header>
 
     <div class="pb-20 lg:pb-0">
+        @if (session('pesan') || session('galat') || $errors->any())
+            <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 pt-4">
+                @if (session('pesan'))
+                    <x-alert tipe="sukses">{{ session('pesan') }}</x-alert>
+                @endif
+                @if (session('galat'))
+                    <x-alert tipe="galat">{{ session('galat') }}</x-alert>
+                @endif
+                @if ($errors->any())
+                    <x-alert tipe="galat">{{ $errors->first() }}</x-alert>
+                @endif
+            </div>
+        @endif
+
         <main>
             @yield('isi')
         </main>
@@ -104,7 +122,7 @@
         <x-tab-bawah :href="route('sahabat-pekka')" label="Sahabat PEKKA" :aktif="request()->routeIs('sahabat-pekka')" :tengah="true">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="m12 6 1 2.5 2.5 1-2.5 1L12 13l-1-2.5-2.5-1 2.5-1z"/>
         </x-tab-bawah>
-        <x-tab-bawah :href="route('pesanan')" label="Pesanan" :aktif="request()->routeIs('pesanan')">
+        <x-tab-bawah :href="route('pesanan')" label="Pesanan" :aktif="request()->routeIs('pesanan', 'pesanan.*')">
             <path d="m7.5 4.3 9 5.2"/><path d="M21 8v8l-9 5-9-5V8l9-5z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/>
         </x-tab-bawah>
         <x-tab-bawah :href="auth()->check() ? route('dashboard') : route('login')" label="Akun" :aktif="request()->routeIs('dashboard')">

@@ -1,4 +1,4 @@
-@props(['name', 'label', 'type' => 'text', 'hint' => null, 'galat' => false, 'wajib' => true, 'awalan' => null])
+@props(['name', 'label', 'type' => 'text', 'hint' => null, 'galat' => false, 'wajib' => true, 'awalan' => null, 'nilai' => null])
 
 @php
     $pesan = $errors->first($name);
@@ -17,7 +17,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             type="{{ $type }}"
-            value="{{ old($name) }}"
+            value="{{ old($name, $nilai) }}"
             aria-invalid="{{ $adaGalat ? 'true' : 'false' }}"
             @if ($pesan) aria-describedby="{{ $name }}-galat" @endif
             {{ $attributes->class(['input', 'input-galat' => $adaGalat, 'pl-16' => $awalan]) }}

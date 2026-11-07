@@ -6,6 +6,7 @@ use App\Notifications\ResetKataSandi;
 use App\Notifications\VerifyAkunPeka;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,6 +43,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function shop(): HasOne
     {
         return $this->hasOne(Shop::class);
+    }
+
+    public function keranjang(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function labelPeran(): string

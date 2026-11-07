@@ -18,4 +18,15 @@ class Telepon
 
         return '62'.$angka;
     }
+
+    public static function lokal(?string $nomor): string
+    {
+        $angka = preg_replace('/\D+/', '', (string) $nomor);
+
+        if ($angka === '') {
+            return '';
+        }
+
+        return str_starts_with($angka, '62') ? '0'.substr($angka, 2) : $angka;
+    }
 }
