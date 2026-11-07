@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             KelompokSeeder::class,
             KategoriSeeder::class,
             AdminDinasSeeder::class,
+            PanduanSeeder::class,
+            KegiatanContohSeeder::class,
             ContohProdukSeeder::class,
         ]);
     }

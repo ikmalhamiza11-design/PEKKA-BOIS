@@ -23,6 +23,8 @@
         if ($admin->adalahAdminDinas()) {
             $menu[] = ['admin.kelompok.index', 'Kelompok', 'admin.kelompok.*', 0];
             $menu[] = ['admin.admin-kelompok.index', 'Admin Kelompok', 'admin.admin-kelompok.*', 0];
+            $menu[] = ['admin.kegiatan.index', 'Kegiatan', 'admin.kegiatan.*', 0];
+            $menu[] = ['admin.panduan.index', 'Panduan', 'admin.panduan.*', 0];
         }
     @endphp
 

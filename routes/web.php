@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminKelompokController;
+use App\Http\Controllers\Admin\DasborController;
+use App\Http\Controllers\Admin\KegiatanController as KegiatanAdminController;
+use App\Http\Controllers\Admin\KelompokController;
+use App\Http\Controllers\Admin\PanduanController as PanduanAdminController;
+use App\Http\Controllers\Admin\TokoController;
+use App\Http\Controllers\Admin\UlasanController as UlasanAdminController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
@@ -8,13 +15,16 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KatalogController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\PanduanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\Penjual\PembayaranController as PembayaranPenjualController;
 use App\Http\Controllers\Penjual\PesananController as PesananPenjualController;
 use App\Http\Controllers\Penjual\ProdukController as ProdukPenjualController;
 use App\Http\Controllers\Penjual\RekeningController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\PetaController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\Penjual\UlasanController as UlasanPenjualController;
 use App\Http\Controllers\ProfilController;
@@ -27,15 +37,10 @@ Route::get('/', BerandaController::class)->name('beranda');
 Route::get('/katalog', KatalogController::class)->name('katalog');
 Route::get('/produk/{id}', [ProdukController::class, 'show'])->whereNumber('id')->name('produk.show');
 
-$segera = [
-    'peta' => 'Peta Usaha',
-    'kegiatan' => 'Kegiatan',
-    'panduan' => 'Panduan',
-];
-
-foreach ($segera as $alamat => $judul) {
-    Route::view('/'.$alamat, 'segera', ['judul' => $judul])->name($alamat);
-}
+Route::get('/peta', PetaController::class)->name('peta');
+Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan');
+Route::get('/kegiatan/{id}', [KegiatanController::class, 'show'])->whereNumber('id')->name('kegiatan.show');
+Route::get('/panduan', PanduanController::class)->name('panduan');
 
 Route::get('/sahabat-pekka', [SahabatPekkaController::class, 'index'])->name('sahabat-pekka');
 Route::post('/sahabat-pekka/kirim', [SahabatPekkaController::class, 'kirim'])->middleware('throttle:12,1,sahabat.kirim.')->name('sahabat-pekka.kirim');
@@ -118,4 +123,44 @@ Route::middleware(['auth', 'verified', 'penjual'])->prefix('penjual')->name('pen
 
     Route::patch('/pembayaran/{id}/terima', [PembayaranPenjualController::class, 'terima'])->whereNumber('id')->name('pembayaran.terima');
     Route::patch('/pembayaran/{id}/tolak', [PembayaranPenjualController::class, 'tolak'])->whereNumber('id')->name('pembayaran.tolak');
+});
+
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', DasborController::class)->name('dasbor');
+
+    Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
+    Route::get('/toko/{id}', [TokoController::class, 'show'])->whereNumber('id')->name('toko.show');
+    Route::patch('/toko/{id}/setujui', [TokoController::class, 'setujui'])->whereNumber('id')->name('toko.setujui');
+    Route::patch('/toko/{id}/tolak', [TokoController::class, 'tolak'])->whereNumber('id')->name('toko.tolak');
+
+    Route::get('/ulasan', [UlasanAdminController::class, 'index'])->name('ulasan.index');
+    Route::patch('/ulasan/{id}/sembunyikan', [UlasanAdminController::class, 'sembunyikan'])->whereNumber('id')->name('ulasan.sembunyikan');
+    Route::patch('/ulasan/{id}/tampilkan', [UlasanAdminController::class, 'tampilkan'])->whereNumber('id')->name('ulasan.tampilkan');
+
+    Route::middleware('admin.dinas')->group(function () {
+        Route::get('/kelompok', [KelompokController::class, 'index'])->name('kelompok.index');
+        Route::post('/kelompok', [KelompokController::class, 'store'])->name('kelompok.store');
+        Route::post('/kelompok/impor', [KelompokController::class, 'impor'])->name('kelompok.impor');
+        Route::get('/kelompok/{id}/ubah', [KelompokController::class, 'edit'])->whereNumber('id')->name('kelompok.edit');
+        Route::put('/kelompok/{id}', [KelompokController::class, 'update'])->whereNumber('id')->name('kelompok.update');
+        Route::delete('/kelompok/{id}', [KelompokController::class, 'destroy'])->whereNumber('id')->name('kelompok.destroy');
+
+        Route::get('/admin-kelompok', [AdminKelompokController::class, 'index'])->name('admin-kelompok.index');
+        Route::post('/admin-kelompok', [AdminKelompokController::class, 'store'])->name('admin-kelompok.store');
+        Route::delete('/admin-kelompok/{id}', [AdminKelompokController::class, 'destroy'])->whereNumber('id')->name('admin-kelompok.destroy');
+
+        Route::get('/kegiatan', [KegiatanAdminController::class, 'index'])->name('kegiatan.index');
+        Route::get('/kegiatan/tambah', [KegiatanAdminController::class, 'create'])->name('kegiatan.create');
+        Route::post('/kegiatan', [KegiatanAdminController::class, 'store'])->name('kegiatan.store');
+        Route::get('/kegiatan/{id}/ubah', [KegiatanAdminController::class, 'edit'])->whereNumber('id')->name('kegiatan.edit');
+        Route::put('/kegiatan/{id}', [KegiatanAdminController::class, 'update'])->whereNumber('id')->name('kegiatan.update');
+        Route::delete('/kegiatan/{id}', [KegiatanAdminController::class, 'destroy'])->whereNumber('id')->name('kegiatan.destroy');
+
+        Route::get('/panduan', [PanduanAdminController::class, 'index'])->name('panduan.index');
+        Route::get('/panduan/tambah', [PanduanAdminController::class, 'create'])->name('panduan.create');
+        Route::post('/panduan', [PanduanAdminController::class, 'store'])->name('panduan.store');
+        Route::get('/panduan/{id}/ubah', [PanduanAdminController::class, 'edit'])->whereNumber('id')->name('panduan.edit');
+        Route::put('/panduan/{id}', [PanduanAdminController::class, 'update'])->whereNumber('id')->name('panduan.update');
+        Route::delete('/panduan/{id}', [PanduanAdminController::class, 'destroy'])->whereNumber('id')->name('panduan.destroy');
+    });
 });

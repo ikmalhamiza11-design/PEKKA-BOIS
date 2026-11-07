@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kelompok extends Model
 {
-    protected $fillable = ['nama', 'desa', 'kecamatan'];
+    protected $fillable = ['nama', 'desa', 'kecamatan', 'latitude', 'longitude'];
+
+    protected function casts(): array
+    {
+        return [
+            'latitude' => 'float',
+            'longitude' => 'float',
+        ];
+    }
+
+    public function punyaKoordinat(): bool
+    {
+        return $this->latitude !== null && $this->longitude !== null;
+    }
 
     public function shops(): HasMany
     {

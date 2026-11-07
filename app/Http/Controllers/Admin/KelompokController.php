@@ -139,12 +139,16 @@ class KelompokController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'desa' => ['nullable', 'string', 'max:255'],
             'kecamatan' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
         ]);
 
         return [
             'nama' => trim($data['nama']),
             'desa' => filled($data['desa'] ?? null) ? trim($data['desa']) : null,
             'kecamatan' => filled($data['kecamatan'] ?? null) ? trim($data['kecamatan']) : null,
+            'latitude' => filled($data['latitude'] ?? null) ? (float) $data['latitude'] : null,
+            'longitude' => filled($data['longitude'] ?? null) ? (float) $data['longitude'] : null,
         ];
     }
 

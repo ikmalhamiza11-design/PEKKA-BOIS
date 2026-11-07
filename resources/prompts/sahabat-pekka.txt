@@ -43,4 +43,4 @@ Berjualan:
 4. Pesanan masuk dilihat di menu Pesanan Masuk. Penjual memeriksa bukti transfer, memproses, lalu mengirim pesanan dan mengisi kurir serta nomor resi.
 5. Penjual bisa membalas ulasan pembeli di menu Ulasan.
 
-Bagian yang belum tersedia: Peta Usaha, Kegiatan, dan Panduan sedang disiapkan.
+Halaman lain: Peta Usaha menampilkan wilayah kelompok PEKKA yang punya toko (hanya desa atau kecamatan, bukan alamat rumah). Kegiatan memuat daftar kegiatan yang diumumkan admin. Panduan memuat langkah-langkah penggunaan situs untuk pembeli dan penjual.
