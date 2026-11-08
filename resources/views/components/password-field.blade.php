@@ -21,8 +21,9 @@
             @if ($pesan) aria-describedby="{{ $name }}-galat" @endif
             {{ $attributes->class(['input', 'pr-12', 'input-galat' => $adaGalat]) }}
         >
-        <button type="button" data-toggle-password="{{ $name }}" aria-pressed="false" aria-label="Tampilkan kata sandi" class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-olive">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        <button type="button" data-toggle-password="{{ $name }}" aria-pressed="false" aria-label="Tampilkan kata sandi" class="absolute inset-y-0 right-0 z-10 flex w-12 touch-manipulation items-center justify-center rounded-r-xl text-olive">
+            <svg data-ikon-lihat viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg data-ikon-sembunyi viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none hidden"><path d="M9.9 4.2A10 10 0 0 1 12 4c6.5 0 10 8 10 8a17 17 0 0 1-2.2 3.2"/><path d="M6.6 6.6A16.5 16.5 0 0 0 2 12s3.5 8 10 8a9.7 9.7 0 0 0 5.4-1.6"/><path d="M14.1 14.1a3 3 0 1 1-4.2-4.2"/><path d="m2 2 20 20"/></svg>
         </button>
     </div>
 

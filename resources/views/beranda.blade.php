@@ -20,8 +20,8 @@
         ];
     @endphp
 
-    <section class="mx-auto grid max-w-6xl gap-4 px-4 pt-5 lg:grid-cols-[1.5fr_1fr] lg:pt-6">
-        <div class="flex flex-col gap-5 lg:rounded-3xl lg:bg-lime/15 lg:p-8">
+    <section class="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 pt-5 lg:grid-cols-[1.5fr_1fr] lg:pt-6">
+        <div class="flex min-w-0 flex-col gap-5 lg:rounded-3xl lg:bg-lime/15 lg:p-8">
             <div>
                 <p class="mb-3 inline-flex rounded-full bg-lime/30 px-3 py-1 text-xs font-bold text-olive">Marketplace perempuan kepala keluarga</p>
                 <h1 class="text-3xl font-extrabold leading-snug lg:text-4xl">Belanja &amp; Dukung <br class="lg:hidden"><span class="rounded-md bg-lime px-2 py-0.5 leading-[1.6] box-decoration-clone">Usaha PEKKA Bogor</span></h1>

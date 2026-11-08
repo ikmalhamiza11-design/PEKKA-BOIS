@@ -11,13 +11,30 @@ function cekAturan(nilai) {
 
 function pasangTombolLihat(tombol) {
     const input = document.getElementById(tombol.dataset.togglePassword);
-    if (!input) return;
+    if (!input || tombol.dataset.terpasang) return;
+    tombol.dataset.terpasang = '1';
 
-    tombol.addEventListener('click', () => {
+    const ikonLihat = tombol.querySelector('[data-ikon-lihat]');
+    const ikonSembunyi = tombol.querySelector('[data-ikon-sembunyi]');
+
+    tombol.addEventListener('pointerdown', (e) => e.preventDefault());
+    tombol.addEventListener('mousedown', (e) => e.preventDefault());
+
+    tombol.addEventListener('click', (e) => {
+        e.preventDefault();
+        const awal = input.selectionStart;
+        const akhir = input.selectionEnd;
         const tampil = input.type === 'password';
+
         input.type = tampil ? 'text' : 'password';
         tombol.setAttribute('aria-pressed', String(tampil));
         tombol.setAttribute('aria-label', tampil ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+        if (ikonLihat) ikonLihat.classList.toggle('hidden', tampil);
+        if (ikonSembunyi) ikonSembunyi.classList.toggle('hidden', ! tampil);
+
+        if (document.activeElement === input && awal !== null) {
+            input.setSelectionRange(awal, akhir);
+        }
     });
 }
 
@@ -48,7 +65,13 @@ function pasangMeter(meter) {
     perbarui();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function mulai() {
     document.querySelectorAll('[data-toggle-password]').forEach(pasangTombolLihat);
     document.querySelectorAll('[data-strength-for]').forEach(pasangMeter);
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mulai);
+} else {
+    mulai();
+}

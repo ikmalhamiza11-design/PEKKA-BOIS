@@ -2,14 +2,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#fcf3dd">
     <title>@yield('judul', 'Beranda') - {{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-cream font-sans text-ink antialiased">
+<body class="min-h-screen overflow-x-clip bg-cream font-sans text-ink antialiased">
     @php
         $menu = [
             ['beranda', 'Beranda'],
@@ -65,7 +65,7 @@
         </div>
     </header>
 
-    <div class="pb-20 lg:pb-0">
+    <div class="pb-28 lg:pb-0">
         @if (session('pesan') || session('galat') || $errors->any())
             <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 pt-4">
                 @if (session('pesan'))
@@ -117,7 +117,7 @@
         </footer>
     </div>
 
-    <nav class="fixed inset-x-0 bottom-0 z-30 flex h-16 items-end border-t border-olive/15 bg-paper lg:hidden" aria-label="Navigasi bawah">
+    <nav class="fixed inset-x-0 bottom-0 z-30 flex items-end border-t border-olive/15 bg-paper pb-[env(safe-area-inset-bottom)] lg:hidden" aria-label="Navigasi bawah">
         <x-tab-bawah :href="route('beranda')" label="Beranda" :aktif="request()->routeIs('beranda')">
             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
         </x-tab-bawah>
