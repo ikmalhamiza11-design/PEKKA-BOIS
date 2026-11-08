@@ -3,6 +3,8 @@
 @section('judul', 'Masuk')
 
 @section('isi')
+    <x-logo-gunadarma />
+
     <div>
         <p class="mb-3 inline-flex rounded-full bg-lime/25 px-3 py-1 text-xs font-bold text-olive">Etalase usaha perempuan kepala keluarga</p>
         <h1 class="text-3xl font-extrabold leading-tight">Selamat datang kembali</h1>
