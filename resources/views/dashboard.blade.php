@@ -42,6 +42,18 @@
             </x-alert>
         @endunless
 
+        @if ($shop->libur)
+            <x-alert judul="Tokomu sedang libur">
+                Pembeli belum bisa memesan.
+                <a href="{{ route('penjual.ketersediaan.edit') }}" class="font-extrabold underline">Atur ketersediaan toko</a>
+            </x-alert>
+        @elseif (! $shop->sesuaiJadwal())
+            <x-alert judul="Tokomu sedang di luar jam buka">
+                Hanya produk pre-order yang bisa dipesan sekarang.
+                <a href="{{ route('penjual.ketersediaan.edit') }}" class="font-extrabold underline">Atur ketersediaan toko</a>
+            </x-alert>
+        @endif
+
         @if ($ringkasan)
             <section class="grid grid-cols-3 gap-3 text-center">
                 <div class="card !p-3">
@@ -82,6 +94,7 @@
                     <span class="ml-2 rounded-full bg-danger px-2 py-0.5 text-xs font-extrabold text-white" aria-label="{{ $ulasanBelumDibalas }} ulasan belum dibalas">{{ $ulasanBelumDibalas }}</span>
                 @endif
             </a>
+            <a href="{{ route('penjual.ketersediaan.edit') }}" class="btn-secondary">Ketersediaan Toko</a>
             <a href="{{ route('penjual.rekening.edit') }}" class="btn-secondary">Rekening Pembayaran</a>
         </div>
     @endif

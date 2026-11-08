@@ -2,6 +2,7 @@
 
 @php
     $habis = $produk->stok < 1;
+    $kendala = $produk->kendalaToko();
     $milik = auth()->check() && auth()->user()->shop?->id === $produk->shop_id;
     $kelasTombol = $kecil ? 'btn-primary min-h-11 !px-3 !py-2 text-sm' : 'btn-primary text-sm';
     $kelasLuar = $kecil ? 'relative z-10 mt-auto' : 'flex flex-1';
@@ -11,6 +12,8 @@
     <div class="{{ $kelasLuar }}"><button type="button" disabled aria-disabled="true" class="{{ $kelasTombol }}">Habis</button></div>
 @elseif ($milik)
     <div class="{{ $kelasLuar }}"><button type="button" disabled aria-disabled="true" class="{{ $kelasTombol }}">Produk Anda</button></div>
+@elseif ($kendala)
+    <div class="{{ $kelasLuar }}"><button type="button" disabled aria-disabled="true" class="{{ $kelasTombol }}">{{ $produk->shop->libur ? 'Toko Libur' : 'Toko Tutup' }}</button></div>
 @elseif (auth()->check())
     <form method="POST" action="{{ route('keranjang.tambah') }}" class="{{ $kelasLuar }}">
         @csrf

@@ -46,6 +46,10 @@ class KeranjangController extends Controller
             return back()->with('galat', 'Kamu tidak bisa membeli produk dari tokomu sendiri.');
         }
 
+        if ($kendala = $produk->kendalaToko()) {
+            return back()->with('galat', $kendala);
+        }
+
         if ($produk->stok < 1) {
             return back()->with('galat', 'Stok produk ini sedang habis.');
         }

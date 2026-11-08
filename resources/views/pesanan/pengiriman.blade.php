@@ -2,6 +2,8 @@
     <div class="mt-4">
         <x-alert judul="Pesanan sedang diproses">Penjual sedang menyiapkan pesananmu.</x-alert>
     </div>
+
+    @include('pesanan.wa-penjual')
 @elseif ($pesanan->status === \App\Models\Order::DIKIRIM)
     <div class="mt-4">
         <x-alert judul="Pesananmu sedang dikirim">

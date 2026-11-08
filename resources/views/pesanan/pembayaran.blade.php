@@ -16,7 +16,7 @@
         <h2 class="font-extrabold">Pembayaran</h2>
 
         @if ($toko->punyaRekening())
-            <p class="mt-2 text-ink/70">Transfer sesuai total pesanan ke rekening berikut, lalu unggah bukti transfernya.</p>
+            <p class="mt-2 text-ink/70">Transfer sesuai jumlah di bawah ke rekening berikut, lalu unggah bukti transfernya. Tombol WhatsApp ke penjual muncul setelah bukti terkirim.</p>
 
             <div class="mt-3 rounded-xl bg-cream/70 p-3">
                 <p class="text-xs text-ink/60">{{ $toko->nama_bank }}</p>
@@ -25,6 +25,7 @@
             </div>
 
             <p class="mt-3">Jumlah transfer: <span class="font-extrabold text-olive">{{ \App\Support\Rupiah::format($pesanan->total) }}</span></p>
+            <p class="mt-1 text-xs font-semibold text-ink/70">Transfer hanya untuk harga produk. Ongkir dibicarakan lewat WhatsApp setelah bayar.</p>
 
             <form method="POST" action="{{ route('pembayaran.store', $pesanan->id) }}" enctype="multipart/form-data" class="mt-4 flex flex-col gap-4" novalidate>
                 @csrf
@@ -61,10 +62,14 @@
     @if ($terakhir)
         <a href="{{ route('pembayaran.bukti', $terakhir->id) }}" target="_blank" rel="noopener" class="btn-secondary mt-3">Lihat Bukti yang Dikirim</a>
     @endif
+
+    @include('pesanan.wa-penjual')
 @elseif ($pesanan->status === \App\Models\Order::DIBAYAR)
     <div class="mt-4">
         <x-alert tipe="sukses" judul="Pembayaran diterima">
             Penjual sudah memastikan pembayaranmu dan akan memproses pesanan ini.
         </x-alert>
     </div>
+
+    @include('pesanan.wa-penjual')
 @endif

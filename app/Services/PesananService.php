@@ -21,8 +21,17 @@ class PesananService
             }
 
             foreach ($pesanan->items as $item) {
-                if ($item->product_id) {
-                    Product::whereKey($item->product_id)->increment('stok', $item->jumlah);
+                $produk = $item->product_id ? Product::lockForUpdate()->find($item->product_id) : null;
+
+                if ($produk) {
+                    $stokBaru = $produk->stok + $item->jumlah;
+
+                    // Stok harian tidak boleh melebihi jatah hari itu saat pesanan lama dibatalkan.
+                    if ($produk->stok_harian !== null && ! $produk->preOrder()) {
+                        $stokBaru = max($produk->stok, min($stokBaru, $produk->stok_harian));
+                    }
+
+                    $produk->update(['stok' => $stokBaru]);
                 }
             }
 

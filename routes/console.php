@@ -9,3 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('pesanan:kedaluwarsa')->hourly();
+// Stok produk berstok harian kembali ke jatahnya setiap pagi (WIB).
+Schedule::command('stok:reset-harian')->dailyAt('00:05')->timezone(config('app.zona_toko', 'Asia/Jakarta'));

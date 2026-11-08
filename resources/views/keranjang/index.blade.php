@@ -86,7 +86,7 @@
                         <span class="font-bold">Total</span>
                         <span class="text-xl font-extrabold text-olive">{{ Rupiah::format($total) }}</span>
                     </div>
-                    <p class="mt-2 text-xs text-ink/60">Ongkos kirim belum termasuk dan akan dikonfirmasi oleh penjual.</p>
+                    <p class="mt-2 text-xs text-ink/60">Total belum termasuk ongkir. Setelah bayar, ongkir dan cara penerimaan dibicarakan langsung dengan penjual lewat WhatsApp.</p>
 
                     @if ($adaMasalah)
                         <p class="mt-3 text-sm font-bold text-danger">Perbaiki produk bertanda merah dulu, lalu lanjut ke checkout.</p>

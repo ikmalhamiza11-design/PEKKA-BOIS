@@ -42,6 +42,10 @@ class CartItem extends Model
             return 'Produk dari tokomu sendiri tidak bisa dibeli.';
         }
 
+        if ($kendala = $produk->kendalaToko()) {
+            return $kendala;
+        }
+
         if ($produk->stok < 1) {
             return 'Stok habis.';
         }

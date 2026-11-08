@@ -13,6 +13,7 @@ class OrderItem extends Model
         'nama',
         'harga',
         'jumlah',
+        'pre_order_hari',
         'subtotal',
     ];
 

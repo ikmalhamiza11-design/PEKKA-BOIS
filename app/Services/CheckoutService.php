@@ -66,6 +66,7 @@ class CheckoutService
                         'nama' => $item->product->nama,
                         'harga' => $item->product->harga,
                         'jumlah' => $item->jumlah,
+                        'pre_order_hari' => $item->product->preOrder() ? $item->product->pre_order_hari : null,
                         'subtotal' => $item->product->harga * $item->jumlah,
                     ]);
 

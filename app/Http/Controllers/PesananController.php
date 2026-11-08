@@ -21,7 +21,7 @@ class PesananController extends Controller
     public function show(Request $request, int $id): View
     {
         return view('pesanan.show', [
-            'pesanan' => $request->user()->orders()->with(['shop.kelompok', 'items.review', 'payments', 'pembayaranTerakhir'])->findOrFail($id),
+            'pesanan' => $request->user()->orders()->with(['shop.kelompok', 'shop.user', 'items.review', 'payments', 'pembayaranTerakhir'])->findOrFail($id),
         ]);
     }
 

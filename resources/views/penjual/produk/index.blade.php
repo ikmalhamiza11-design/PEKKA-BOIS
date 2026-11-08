@@ -33,6 +33,11 @@
                     <p class="truncate font-extrabold">{{ $item->nama }}</p>
                     <p class="font-extrabold text-olive">{{ $item->harga_rupiah }}</p>
                     <p class="text-xs text-ink/70">{{ $item->category->nama }} &middot; Stok: {{ $item->stok }}</p>
+                    @if ($item->preOrder())
+                        <p class="text-xs font-bold text-amber-900">Pre-order {{ $item->pre_order_hari }} hari</p>
+                    @elseif ($item->stok_harian)
+                        <p class="text-xs text-ink/70">Stok harian: {{ $item->stok_harian }} per hari</p>
+                    @endif
                     <div class="mt-1 flex flex-wrap gap-1.5">
                         @if ($item->aktif)
                             <span class="rounded-full bg-lime/30 px-2.5 py-0.5 text-[0.7rem] font-extrabold text-olive">Aktif</span>

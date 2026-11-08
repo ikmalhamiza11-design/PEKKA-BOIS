@@ -51,7 +51,7 @@ class PembayaranController extends Controller
             return redirect()->route('pesanan.show', $id)->with('galat', 'Bukti transfer tidak bisa dikirim untuk pesanan ini.');
         }
 
-        return redirect()->route('pesanan.show', $id)->with('pesan', 'Bukti transfer terkirim. Penjual akan memeriksanya.');
+        return redirect()->route('pesanan.show', $id)->with('pesan', 'Bukti transfer terkirim. Sekarang hubungi penjual lewat tombol WhatsApp di bawah untuk membicarakan pengambilan atau pengiriman.');
     }
 
     public function bukti(Request $request, int $id)

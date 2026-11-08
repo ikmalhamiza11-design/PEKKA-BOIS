@@ -19,6 +19,14 @@
     <div class="flex flex-1 flex-col gap-1.5 px-1 pb-1 pt-3">
         <h3 class="text-sm font-extrabold leading-snug"><a href="{{ route('produk.show', $produk->id) }}" class="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-olive">{{ $produk->nama }}</a></h3>
         <p class="font-extrabold text-olive">{{ $produk->harga_rupiah }}</p>
+        @if ($produk->preOrder())
+            <p class="w-fit rounded-full bg-amber-100 px-2.5 py-0.5 text-[0.7rem] font-extrabold text-amber-900">Pre-order {{ $produk->pre_order_hari }} hari</p>
+        @endif
+        @if ($produk->shop->libur)
+            <p class="w-fit rounded-full bg-ink/10 px-2.5 py-0.5 text-[0.7rem] font-extrabold text-ink/70">Toko libur</p>
+        @elseif ($produk->kendalaToko())
+            <p class="w-fit rounded-full bg-ink/10 px-2.5 py-0.5 text-[0.7rem] font-extrabold text-ink/70">Toko tutup</p>
+        @endif
         @if (($produk->reviews_count ?? 0) > 0)
             <x-bintang :nilai="$produk->reviews_avg_rating" :jumlah="$produk->reviews_count" :kecil="true" />
         @endif

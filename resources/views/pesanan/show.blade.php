@@ -34,6 +34,9 @@
                             <span class="font-bold">{{ $item->nama }}</span>
                         @endif
                         <p class="text-ink/70">{{ Rupiah::format($item->harga) }} &times; {{ $item->jumlah }}</p>
+                        @if ($item->pre_order_hari)
+                            <p class="text-xs font-bold text-amber-900">Pre-order, siap sekitar {{ $item->pre_order_hari }} hari setelah dipesan</p>
+                        @endif
                         @if ($pesanan->status === \App\Models\Order::SELESAI && $item->product_id)
                             <div class="mt-2 flex flex-wrap items-center gap-2">
                                 @if ($item->review)
@@ -53,7 +56,7 @@
                 <span class="font-bold">Total</span>
                 <span class="text-xl font-extrabold text-olive">{{ Rupiah::format($pesanan->total) }}</span>
             </div>
-            <p class="mt-1 text-xs text-ink/60">Ongkos kirim belum termasuk dan akan dikonfirmasi oleh penjual.</p>
+            <p class="mt-1 text-xs text-ink/60">Total belum termasuk ongkir. Setelah bayar, ongkir dan cara penerimaan dibicarakan langsung dengan penjual lewat WhatsApp.</p>
         </section>
 
         <section class="card mt-4 !p-4 text-sm">

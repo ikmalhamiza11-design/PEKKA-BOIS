@@ -35,6 +35,24 @@
 
         <x-field name="stok" label="Stok" type="number" inputmode="numeric" min="0" hint="Isi 0 jika stok sedang habis." :nilai="$produk?->stok ?? 0" />
 
+        <x-field name="stok_harian" :wajib="false" label="Stok harian (boleh dikosongkan)" type="number" inputmode="numeric" min="1" hint="Untuk produk yang dibuat tiap hari. Kalau diisi, stok otomatis kembali ke angka ini setiap pagi (pukul 00.05 WIB). Kosongkan kalau stok tidak perlu diisi ulang otomatis." :nilai="$produk?->stok_harian" />
+
+        <fieldset class="rounded-xl border border-olive/15 p-3">
+            <legend class="px-1 text-sm font-bold">Pre-order (khusus makanan)</legend>
+            <input type="hidden" name="pre_order" value="0">
+            <label class="flex items-center gap-3 text-sm font-bold">
+                <input type="checkbox" name="pre_order" value="1" class="h-5 w-5 accent-olive" @checked(old('pre_order', $produk?->pre_order))>
+                Produk ini dibuat setelah dipesan (pre-order)
+            </label>
+            @error('pre_order')
+                <p class="mt-1.5 text-sm font-semibold text-danger">{{ $message }}</p>
+            @enderror
+            <div class="mt-3">
+                <x-field name="pre_order_hari" :wajib="false" label="Lama pembuatan (hari)" type="number" inputmode="numeric" min="1" max="14" hint="Contoh: isi 2 kalau pembeli harus memesan 2 hari sebelumnya. Produk pre-order tetap bisa dipesan saat toko di luar jam buka." :nilai="$produk?->pre_order_hari" />
+            </div>
+            <p class="mt-2 text-xs text-ink/60">Hanya untuk kategori Kuliner. Jumlah stok tetap dipakai sebagai batas pesanan.</p>
+        </fieldset>
+
         <div>
             <label for="deskripsi" class="mb-1.5 block text-sm font-bold">Deskripsi</label>
             <textarea id="deskripsi" name="deskripsi" rows="5" maxlength="2000" placeholder="Ceritakan bahan, rasa, ukuran, atau keunggulan produkmu." @class(['input', 'input-galat' => $errors->has('deskripsi')])>{{ old('deskripsi', $produk?->deskripsi) }}</textarea>

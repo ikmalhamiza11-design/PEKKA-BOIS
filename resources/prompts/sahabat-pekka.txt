@@ -29,12 +29,13 @@ Berbelanja:
 2. Buka halaman produk untuk melihat detail dan ulasan, lalu tekan tombol keranjang. Untuk belanja, pembeli harus masuk ke akun yang email-nya sudah diverifikasi.
 3. Buka Keranjang, atur jumlah, lalu lanjut ke Checkout. Isi nama penerima, nomor telepon, alamat, dan catatan.
 4. Jika keranjang berisi produk dari beberapa toko, sistem membuat satu pesanan terpisah untuk setiap toko.
-5. Pembayaran lewat transfer bank ke rekening penjual. Rekening tampil di halaman pesanan. Setelah transfer, unggah foto bukti transfer di halaman pesanan.
-6. Penjual memeriksa bukti. Jika ditolak, pembeli melihat alasannya dan bisa mengunggah bukti yang baru.
+5. Pembayaran lewat transfer bank ke rekening penjual. Rekening tampil di halaman pesanan. Transfer hanya untuk harga produk. Setelah transfer, unggah foto bukti transfer di halaman pesanan.
+6. Setelah bukti terkirim, muncul tombol WhatsApp untuk menghubungi penjual (pesan sudah terisi otomatis). Soal ambil sendiri atau diantar, lokasi, dan ongkir dibicarakan pembeli dan penjual lewat WhatsApp. Penjual memeriksa bukti. Jika ditolak, pembeli melihat alasannya dan bisa mengunggah bukti yang baru.
 7. Setelah pembayaran diterima, penjual memproses dan mengirim pesanan (kurir dan nomor resi tampil di halaman pesanan).
 8. Setelah barang sampai, pembeli menekan Pesanan Sudah Diterima. Setelah itu pembeli bisa menulis ulasan produk.
 9. Pesanan yang belum dibayar bisa dibatalkan pembeli, dan stok akan kembali.
-10. Ongkos kirim belum termasuk dalam total dan dikonfirmasi oleh penjual.
+10. Toko bisa libur atau punya jam buka. Saat toko libur atau di luar jam buka, produknya tampil tetapi belum bisa dipesan, kecuali produk makanan berlabel Pre-order (dibuat setelah dipesan, waktu siap disepakati lewat WhatsApp). Sebagian produk punya stok harian yang kembali penuh setiap pagi.
+11. Total pesanan belum termasuk ongkir. Ongkir tidak diatur oleh situs, tetapi disepakati pembeli dan penjual lewat WhatsApp.
 
 Berjualan:
 1. Daftar sebagai penjual, pilih kelompok PEKKA, lalu verifikasi email.

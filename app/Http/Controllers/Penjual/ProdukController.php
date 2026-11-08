@@ -100,8 +100,13 @@ class ProdukController extends Controller
 
     protected function data(SimpanProdukRequest $request): array
     {
+        $preOrder = $request->boolean('pre_order');
+
         return [
             ...$request->safe()->only(['nama', 'category_id', 'deskripsi', 'harga', 'stok']),
+            'stok_harian' => $preOrder ? null : ($request->filled('stok_harian') ? (int) $request->input('stok_harian') : null),
+            'pre_order' => $preOrder,
+            'pre_order_hari' => $preOrder ? (int) $request->input('pre_order_hari') : null,
             'aktif' => $request->boolean('aktif'),
         ];
     }

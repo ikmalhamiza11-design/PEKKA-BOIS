@@ -33,6 +33,9 @@
                 <div class="min-w-0">
                     <p class="font-bold">{{ $item->nama }}</p>
                     <p class="text-ink/70">{{ \App\Support\Rupiah::format($item->harga) }} &times; {{ $item->jumlah }}</p>
+                    @if ($item->pre_order_hari)
+                        <p class="text-xs font-bold text-amber-900">Pre-order, siap sekitar {{ $item->pre_order_hari }} hari setelah dipesan</p>
+                    @endif
                 </div>
                 <span class="shrink-0 font-extrabold">{{ \App\Support\Rupiah::format($item->subtotal) }}</span>
             </div>

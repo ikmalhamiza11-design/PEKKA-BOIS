@@ -5,6 +5,7 @@
 @section('isi')
     @php
         $habis = $produk->stok < 1;
+        $kendala = $produk->kendalaToko();
         $maks = max($produk->stok, 1);
         $milikSendiri = auth()->check() && auth()->user()->shop?->id === $produk->shop_id;
     @endphp
@@ -43,6 +44,18 @@
                     <p class="mt-2 text-3xl font-extrabold text-olive">{{ $produk->harga_rupiah }}</p>
                     @if ($ringkasan['jumlah'] > 0)
                         <a href="#ulasan" class="mt-2 inline-flex"><x-bintang :nilai="$ringkasan['rata']" :jumlah="$ringkasan['jumlah']" /></a>
+                    @endif
+                    @if ($produk->preOrder())
+                        <p class="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">
+                            Pre-order: produk dibuat setelah dipesan, siap sekitar {{ $produk->pre_order_hari }} hari. Waktu pastinya kamu sepakati dengan penjual lewat WhatsApp.
+                        </p>
+                    @endif
+                    @if ($kendala)
+                        <p class="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm font-semibold text-danger">{{ $kendala }}</p>
+                    @elseif (! $produk->shop->sesuaiJadwal() && $produk->shop->jadwalTeks())
+                        <p class="mt-2 text-xs text-ink/60">Toko sedang di luar jam buka, tetapi produk pre-order tetap bisa dipesan. {{ $produk->shop->jadwalTeks() }}</p>
+                    @elseif ($produk->shop->jadwalTeks())
+                        <p class="mt-2 text-xs text-ink/60">{{ $produk->shop->jadwalTeks() }}</p>
                     @endif
                     <p class="mt-2">
                         @if ($habis)
@@ -91,6 +104,8 @@
                         <button type="button" disabled aria-disabled="true" class="btn-primary flex-1">Stok habis</button>
                     @elseif ($milikSendiri)
                         <button type="button" disabled aria-disabled="true" class="btn-primary flex-1">Produk Anda</button>
+                    @elseif ($kendala)
+                        <button type="button" disabled aria-disabled="true" class="btn-primary flex-1">{{ $produk->shop->libur ? 'Toko libur' : 'Toko tutup' }}</button>
                     @elseif (auth()->check())
                         <button type="submit" form="form-keranjang" class="btn-primary flex-1">+ Keranjang</button>
                     @else
@@ -201,6 +216,8 @@
             <button type="button" disabled aria-disabled="true" class="btn-primary ml-auto max-w-[12rem]">Stok habis</button>
         @elseif ($milikSendiri)
             <button type="button" disabled aria-disabled="true" class="btn-primary ml-auto max-w-[12rem]">Produk Anda</button>
+        @elseif ($kendala)
+            <button type="button" disabled aria-disabled="true" class="btn-primary ml-auto max-w-[12rem]">{{ $produk->shop->libur ? 'Toko libur' : 'Toko tutup' }}</button>
         @elseif (auth()->check())
             <button type="submit" form="form-keranjang" class="btn-primary ml-auto max-w-[12rem]">+ Keranjang</button>
         @else

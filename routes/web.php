@@ -26,6 +26,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\Penjual\PembayaranController as PembayaranPenjualController;
 use App\Http\Controllers\Penjual\PesananController as PesananPenjualController;
 use App\Http\Controllers\Penjual\ProdukController as ProdukPenjualController;
+use App\Http\Controllers\Penjual\KetersediaanController;
 use App\Http\Controllers\Penjual\RekeningController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\PetaController;
@@ -123,6 +124,9 @@ Route::middleware(['auth', 'verified', 'penjual'])->prefix('penjual')->name('pen
 
     Route::get('/rekening', [RekeningController::class, 'edit'])->name('rekening.edit');
     Route::put('/rekening', [RekeningController::class, 'update'])->middleware('throttle:10,1,rekening.update.')->name('rekening.update');
+
+    Route::get('/ketersediaan', [KetersediaanController::class, 'edit'])->name('ketersediaan.edit');
+    Route::put('/ketersediaan', [KetersediaanController::class, 'update'])->middleware('throttle:20,1,ketersediaan.update.')->name('ketersediaan.update');
 
     Route::get('/pesanan', [PesananPenjualController::class, 'index'])->name('pesanan.index');
     Route::get('/pesanan/{id}', [PesananPenjualController::class, 'show'])->whereNumber('id')->name('pesanan.show');
