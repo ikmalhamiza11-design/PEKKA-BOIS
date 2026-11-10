@@ -41,6 +41,7 @@ class Shop extends Model
         return [
             'libur' => 'boolean',
             'jadwal_otomatis' => 'boolean',
+            'diverifikasi_at' => 'datetime',
         ];
     }
 

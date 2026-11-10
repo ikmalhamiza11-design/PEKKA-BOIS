@@ -60,7 +60,7 @@
                     <button type="submit" class="btn-secondary min-h-11 !px-2 !py-2 text-sm">{{ $item->aktif ? 'Nonaktifkan' : 'Aktifkan' }}</button>
                 </form>
 
-                <form method="POST" action="{{ route('penjual.produk.destroy', $item->id) }}" onsubmit="return confirm('Hapus produk ini? Tindakan ini tidak bisa dibatalkan.')">
+                <form method="POST" action="{{ route('penjual.produk.destroy', $item->id) }}" data-konfirmasi="Hapus produk ini? Tindakan ini tidak bisa dibatalkan." data-konfirmasi-judul="Hapus data ini?" data-konfirmasi-tombol="Ya, Hapus">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-secondary min-h-11 !border-danger !px-2 !py-2 text-sm !text-danger hover:!bg-red-50">Hapus</button>

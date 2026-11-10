@@ -77,7 +77,7 @@
             </a>
 
             @if ($terakhir->status === \App\Models\Payment::MENUNGGU)
-                <form method="POST" action="{{ route('penjual.pembayaran.terima', $terakhir->id) }}" class="mt-4" onsubmit="return confirm('Terima pembayaran ini? Pastikan dana sudah masuk ke rekeningmu.')">
+                <form method="POST" action="{{ route('penjual.pembayaran.terima', $terakhir->id) }}" class="mt-4" data-konfirmasi="Terima pembayaran ini? Pastikan dana sudah masuk ke rekeningmu.">
                     @csrf
                     @method('PATCH')
                     <button type="submit" class="btn-primary">Terima Pembayaran</button>

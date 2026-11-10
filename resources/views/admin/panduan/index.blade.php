@@ -20,7 +20,7 @@
                         </div>
                         <div class="flex gap-2">
                             <a href="{{ route('admin.panduan.edit', $item->id) }}" class="btn-secondary min-h-11 !w-auto !px-4 !py-2 text-sm">Ubah</a>
-                            <form method="POST" action="{{ route('admin.panduan.destroy', $item->id) }}" onsubmit="return confirm('Hapus panduan ini?')">
+                            <form method="POST" action="{{ route('admin.panduan.destroy', $item->id) }}" data-konfirmasi="Hapus panduan ini?" data-konfirmasi-judul="Hapus data ini?" data-konfirmasi-tombol="Ya, Hapus">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-secondary min-h-11 !w-auto !border-danger !px-4 !py-2 text-sm !text-danger">Hapus</button>

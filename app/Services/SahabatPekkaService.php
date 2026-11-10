@@ -28,7 +28,7 @@ class SahabatPekkaService
         $kunci = config('services.gemini.key');
 
         if (blank($kunci)) {
-            throw new SahabatPekkaGalat('Sahabat PEKKA belum diaktifkan. Silakan coba lagi nanti.', 503);
+            return $this->jawabLokal($pesan);
         }
 
         $batas = (int) config('services.gemini.batas_per_menit', 10);
@@ -67,11 +67,7 @@ class SahabatPekkaService
         } catch (ConnectionException $e) {
             Log::warning('Sahabat PEKKA: koneksi ke Gemini gagal', ['pesan' => $e->getMessage()]);
 
-            throw new SahabatPekkaGalat('Sahabat PEKKA sedang tidak bisa dihubungi. Coba lagi sebentar.', 503);
-        }
-
-        if ($respons->status() === 429) {
-            throw new SahabatPekkaGalat('Sahabat PEKKA sedang ramai. Coba lagi sebentar lagi ya.', 429);
+            return $this->jawabLokal($pesan);
         }
 
         if ($respons->failed()) {
@@ -80,7 +76,7 @@ class SahabatPekkaService
                 'galat' => $respons->json('error.message'),
             ]);
 
-            throw new SahabatPekkaGalat('Sahabat PEKKA sedang bermasalah. Coba lagi nanti.', 502);
+            return $this->jawabLokal($pesan);
         }
 
         $teks = collect($respons->json('candidates.0.content.parts', []))
@@ -106,6 +102,47 @@ class SahabatPekkaService
                 'url' => route('produk.show', $item->id),
             ])->values()->all(),
         ];
+    }
+
+    protected function jawabLokal(string $pesan): array
+    {
+        $teks = mb_strtolower($pesan);
+        $kata = $this->kataKunci($pesan);
+        $produk = $this->cariProduk($kata);
+
+        $topik = [
+            ['kata' => ['belanja', 'beli', 'membeli', 'checkout', 'keranjang'], 'jawab' => "Cara belanja di PEKKA BOIS:\n1. Masuk atau daftar sebagai pembeli.\n2. Pilih produk di Katalog, lalu tekan + Keranjang.\n3. Buka Keranjang dan pilih Lanjut ke Checkout, isi data penerima.\n4. Transfer sesuai total ke rekening penjual, isi nominal, lalu unggah bukti transfer.\n5. Setelah itu kamu diarahkan ke WhatsApp penjual untuk membicarakan pengambilan atau pengiriman.\n6. Kalau barang sudah sampai, tekan Pesanan Sudah Diterima."],
+            ['kata' => ['jual', 'jualan', 'berjualan', 'penjual', 'toko'], 'jawab' => "Cara berjualan di PEKKA BOIS:\n1. Daftar sebagai penjual dan pilih kelompok PEKKA kamu.\n2. Tunggu toko diverifikasi oleh admin kelompok.\n3. Isi rekening pembayaran di menu Rekening.\n4. Tambahkan produk lengkap dengan harga, stok, dan foto.\n5. Saat ada pesanan, periksa bukti transfer, terima pembayaran, proses, lalu kirim dan isi nomor resi."],
+            ['kata' => ['nib'], 'jawab' => "NIB (Nomor Induk Berusaha) diurus gratis secara online lewat situs OSS (oss.go.id). Siapkan KTP, data usaha, dan alamat usaha, lalu ikuti langkah pendaftaran di sana. Untuk keterangan paling baru, pastikan ke sumber resmi atau tanya pendamping PEKKA di wilayahmu."],
+            ['kata' => ['halal'], 'jawab' => "Sertifikasi halal untuk usaha kecil diajukan lewat layanan resmi BPJPH (halal.go.id). Biasanya kamu perlu NIB terlebih dulu, dan ada skema khusus untuk usaha mikro dan kecil. Persyaratan dan biayanya bisa berubah, jadi pastikan ke sumber resmi atau tanya pendamping PEKKA."],
+        ];
+
+        foreach ($topik as $item) {
+            foreach ($item['kata'] as $kunci) {
+                if (str_contains($teks, $kunci)) {
+                    return ['jawaban' => $item['jawab'], 'produk' => $this->formatProduk($produk)];
+                }
+            }
+        }
+
+        if ($produk->isNotEmpty()) {
+            return ['jawaban' => 'Ini produk di katalog yang mungkin cocok dengan yang kamu cari:', 'produk' => $this->formatProduk($produk)];
+        }
+
+        return [
+            'jawaban' => 'Maaf, saya belum bisa menjawab pertanyaan itu. Coba tanya soal cara belanja, cara berjualan, NIB, label halal, atau tulis nama produk yang kamu cari.',
+            'produk' => [],
+        ];
+    }
+
+    protected function formatProduk(Collection $produk): array
+    {
+        return $produk->map(fn (Product $item) => [
+            'nama' => $item->nama,
+            'harga' => $item->harga_rupiah,
+            'toko' => $item->shop->nama,
+            'url' => route('produk.show', $item->id),
+        ])->values()->all();
     }
 
     protected function kataKunci(string $pesan): Collection

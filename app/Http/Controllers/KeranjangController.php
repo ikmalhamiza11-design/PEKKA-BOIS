@@ -82,7 +82,7 @@ class KeranjangController extends Controller
         $item = $request->user()->keranjang()->with('product')->findOrFail($id);
 
         if ($data['jumlah'] > $item->product->stok) {
-            return redirect()->route('keranjang')->with('galat', 'Stok tersisa '.$item->product->stok.'.');
+            return redirect()->route('keranjang')->with('galat', 'Stok "'.$item->product->nama.'" tersisa '.$item->product->stok.'.');
         }
 
         $item->update(['jumlah' => $data['jumlah']]);

@@ -60,12 +60,12 @@
                 @if ($item->status === 'baru')
                     <div class="flex flex-wrap gap-2">
                         @if ($item->user)
-                            <form method="POST" action="{{ route('admin.laporan.sandi', $item->id) }}" onsubmit="return confirm('Buat sandi sementara untuk {{ addslashes($item->nama) }}? Sandi lama langsung tidak berlaku.')">
+                            <form method="POST" action="{{ route('admin.laporan.sandi', $item->id) }}" data-konfirmasi="Buat sandi sementara untuk {{ $item->nama }}? Sandi lama langsung tidak berlaku.">
                                 @csrf
                                 <button type="submit" class="btn-primary min-h-11 w-auto !px-4 !py-2 text-sm">Buat sandi sementara</button>
                             </form>
                             @unless ($item->user->hasVerifiedEmail())
-                                <form method="POST" action="{{ route('admin.laporan.verifikasi', $item->id) }}" onsubmit="return confirm('Tandai email akun ini terverifikasi tanpa klik tautan?')">
+                                <form method="POST" action="{{ route('admin.laporan.verifikasi', $item->id) }}" data-konfirmasi="Tandai email akun ini terverifikasi tanpa klik tautan?">
                                     @csrf
                                     <button type="submit" class="btn-secondary min-h-11 w-auto !px-4 !py-2 text-sm">Tandai email terverifikasi</button>
                                 </form>

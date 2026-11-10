@@ -67,6 +67,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/atur-ulang-kata-sandi', [PasswordResetController::class, 'update'])->middleware('throttle:6,1,password.update.')->name('password.update');
 });
 
+Route::get('/bukti-transfer/{id}', [PembayaranController::class, 'buktiTautan'])->whereNumber('id')->middleware('signed')->name('pembayaran.bukti.tautan');
+
 Route::get('/bantuan-masuk', [BantuanMasukController::class, 'create'])->name('bantuan.masuk');
 Route::post('/bantuan-masuk', [BantuanMasukController::class, 'store'])->middleware('throttle:5,1,bantuan.masuk.simpan.')->name('bantuan.masuk.simpan');
 

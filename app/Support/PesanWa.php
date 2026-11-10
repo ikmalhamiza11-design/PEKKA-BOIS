@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\Order;
+use Illuminate\Support\Facades\URL;
 
 class PesanWa
 {
@@ -28,13 +29,16 @@ class PesanWa
             ->map(fn ($item) => '- '.$item->nama.' x '.$item->jumlah.($item->pre_order_hari ? ' (pre-order, siap sekitar '.$item->pre_order_hari.' hari)' : ''))
             ->implode("\n");
 
+        $pembayaran = $pesanan->pembayaranTerakhir;
+
         $baris = [
             'Halo, saya pembeli dari PEKKA Bogor Istimewa. Saya sudah transfer dan mengunggah bukti pembayaran.',
             '',
             'Kode pesanan: '.$pesanan->kode,
             'Produk:',
             $produk,
-            'Total yang sudah ditransfer: '.Rupiah::format($pesanan->total).' (harga produk saja)',
+            'Total yang sudah ditransfer: '.Rupiah::format($pembayaran?->jumlah ?? $pesanan->total).' (harga produk saja, sesuai total pesanan)',
+            $pembayaran ? 'Atas nama pengirim: '.$pembayaran->nama_pengirim : null,
             '',
             'Nama penerima: '.$pesanan->nama_penerima,
             'Alamat: '.preg_replace('/\s*\R\s*/', ', ', trim((string) $pesanan->alamat)),
@@ -44,9 +48,15 @@ class PesanWa
             $baris[] = 'Catatan: '.$pesanan->catatan;
         }
 
-        $baris[] = '';
-        $baris[] = 'Bukti transfer sudah saya unggah di situs. Mohon dicek ya. Untuk ambil sendiri atau diantar, dan biaya tambahannya, mari kita bicarakan di sini.';
+        if ($pembayaran) {
+            $baris[] = '';
+            $baris[] = 'Bukti transfer (foto resi):';
+            $baris[] = URL::temporarySignedRoute('pembayaran.bukti.tautan', now()->addDays(7), ['id' => $pembayaran->id]);
+        }
 
-        return implode("\n", $baris);
+        $baris[] = '';
+        $baris[] = 'Bukti transfer juga sudah saya unggah di situs. Mohon dicek ya. Untuk ambil sendiri atau diantar, dan biaya tambahannya, mari kita bicarakan di sini.';
+
+        return implode("\n", array_filter($baris, fn ($b) => $b !== null));
     }
 }

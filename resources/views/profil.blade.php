@@ -50,7 +50,7 @@
     </form>
 
     @if ($user->foto)
-        <form method="POST" action="{{ route('profil.foto.hapus') }}" onsubmit="return confirm('Hapus foto profil?')">
+        <form method="POST" action="{{ route('profil.foto.hapus') }}" data-konfirmasi="Hapus foto profil?" data-konfirmasi-judul="Hapus data ini?" data-konfirmasi-tombol="Ya, Hapus">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn-secondary">Hapus Foto Profil</button>

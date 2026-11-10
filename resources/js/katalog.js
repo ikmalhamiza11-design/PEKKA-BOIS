@@ -119,9 +119,39 @@ function pasangTab() {
     });
 }
 
+function pasangJumlahKeranjang() {
+    document.querySelectorAll('[data-jumlah-keranjang]').forEach((input) => {
+        const awal = input.value;
+        const maks = Number(input.max) || 1;
+
+        const kirim = () => {
+            let nilai = parseInt(input.value, 10);
+
+            if (Number.isNaN(nilai) || nilai < 1) nilai = 1;
+            if (nilai > maks) nilai = maks;
+
+            input.value = nilai;
+
+            if (String(nilai) !== awal) {
+                input.form.submit();
+            }
+        };
+
+        input.addEventListener('change', kirim);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                kirim();
+            }
+        });
+        input.addEventListener('focus', () => input.select());
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     pasangDialog();
     pasangKirimOtomatis();
     pasangStepper();
     pasangTab();
+    pasangJumlahKeranjang();
 });

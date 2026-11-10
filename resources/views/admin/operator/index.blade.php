@@ -40,7 +40,7 @@
                     <p class="truncate text-sm text-ink/70">{{ $item->email }}</p>
                 </div>
                 @if ($item->id !== auth()->id())
-                    <form method="POST" action="{{ route('admin.operator.destroy', $item->id) }}" onsubmit="return confirm('Hapus akun {{ addslashes($item->name) }}?')">
+                    <form method="POST" action="{{ route('admin.operator.destroy', $item->id) }}" data-konfirmasi="Hapus akun {{ $item->name }}?" data-konfirmasi-judul="Hapus data ini?" data-konfirmasi-tombol="Ya, Hapus">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-secondary min-h-11 w-auto !border-danger !px-4 !py-2 text-sm !text-danger hover:!bg-danger/10">Hapus</button>

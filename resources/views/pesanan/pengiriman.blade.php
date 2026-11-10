@@ -11,7 +11,7 @@
         </x-alert>
     </div>
 
-    <form method="POST" action="{{ route('pesanan.diterima', $pesanan->id) }}" class="mt-3" onsubmit="return confirm('Pastikan barang sudah kamu terima. Lanjutkan?')">
+    <form method="POST" action="{{ route('pesanan.diterima', $pesanan->id) }}" class="mt-3" data-konfirmasi="Pastikan barang sudah kamu terima. Lanjutkan?" data-konfirmasi-judul="Pesanan sudah diterima?" data-konfirmasi-tombol="Ya, Sudah Diterima">
         @csrf
         @method('PATCH')
         <button type="submit" class="btn-primary">Pesanan Sudah Diterima</button>

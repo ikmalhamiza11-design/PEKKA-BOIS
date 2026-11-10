@@ -70,7 +70,7 @@
         </section>
 
         @if ($pesanan->bisaDibatalkan())
-            <form method="POST" action="{{ route('pesanan.batal', $pesanan->id) }}" class="mt-4" onsubmit="return confirm('Batalkan pesanan ini?')">
+            <form method="POST" action="{{ route('pesanan.batal', $pesanan->id) }}" class="mt-4" data-konfirmasi="Anda yakin ingin membatalkan pesanan ini? Pesanan yang dibatalkan tidak bisa dikembalikan." data-konfirmasi-judul="Batalkan pesanan?" data-konfirmasi-tombol="Ya, Batalkan">
                 @csrf
                 @method('PATCH')
                 <button type="submit" class="btn-secondary !border-danger !text-danger hover:!bg-red-50">Batalkan Pesanan</button>

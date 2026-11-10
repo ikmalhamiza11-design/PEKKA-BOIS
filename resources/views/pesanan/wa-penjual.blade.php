@@ -10,7 +10,7 @@
 
     @if ($urlWa)
         <a href="{{ $urlWa }}" target="_blank" rel="noopener" class="btn-primary mt-3">Chat Penjual di WhatsApp</a>
-        <p class="mt-2 text-xs text-ink/60">Pesan sudah terisi otomatis berisi kode pesanan, produk, total, dan alamatmu. Kamu bisa mengubahnya sebelum dikirim.</p>
+        <p class="mt-2 text-xs text-ink/60">Pesan sudah terisi otomatis berisi kode pesanan, produk, nominal transfer, alamat, dan tautan foto bukti transfer. Kamu bisa mengubahnya sebelum dikirim.</p>
     @else
         <div class="mt-3">
             <x-alert judul="Nomor WhatsApp penjual belum tersedia">

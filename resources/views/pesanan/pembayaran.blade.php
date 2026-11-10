@@ -16,7 +16,7 @@
         <h2 class="font-extrabold">Pembayaran</h2>
 
         @if ($toko->punyaRekening())
-            <p class="mt-2 text-ink/70">Transfer sesuai jumlah di bawah ke rekening berikut, lalu unggah bukti transfernya. Tombol WhatsApp ke penjual muncul setelah bukti terkirim.</p>
+            <p class="mt-2 text-ink/70">Transfer sesuai jumlah di bawah ke rekening berikut, isi nominal yang kamu transfer, lalu unggah bukti transfernya. Sistem mengecek nominalnya, lalu kamu langsung diarahkan ke WhatsApp penjual dengan pesan yang sudah terisi.</p>
 
             <div class="mt-3 rounded-xl bg-cream/70 p-3">
                 <p class="text-xs text-ink/60">{{ $toko->nama_bank }}</p>
@@ -32,6 +32,8 @@
 
                 <x-field name="nama_pengirim" label="Nama pemilik rekening pengirim" maxlength="100" :nilai="auth()->user()->name" />
 
+                <x-field name="jumlah_transfer" label="Nominal yang kamu transfer" type="text" inputmode="numeric" awalan="Rp" :placeholder="number_format($pesanan->total, 0, ',', '.')" autocomplete="off" hint="Harus sama persis dengan jumlah transfer di atas." />
+
                 <div>
                     <label for="bukti" class="mb-1.5 block text-sm font-bold">Bukti transfer<span class="text-danger" aria-hidden="true"> *</span></label>
                     <input id="bukti" type="file" name="bukti" accept="image/jpeg,image/png,image/webp" @class(['input', 'input-galat' => $errors->has('bukti')])>
@@ -42,7 +44,7 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn-primary">Kirim Bukti Transfer</button>
+                <button type="submit" class="btn-primary">Kirim Bukti &amp; Lanjut ke WhatsApp</button>
             </form>
         @else
             <div class="mt-3">

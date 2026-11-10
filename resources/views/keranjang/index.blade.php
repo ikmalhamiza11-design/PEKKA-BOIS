@@ -44,6 +44,8 @@
 
                                         @if ($masalah)
                                             <p class="mt-1 text-sm font-bold text-danger">{{ $masalah }}</p>
+                                        @elseif ($produk->stok > 0)
+                                            <p class="mt-1 text-xs text-ink/60">Stok tersedia {{ $produk->stok }}</p>
                                         @endif
 
                                         <div class="mt-2 flex flex-wrap items-center justify-between gap-2">
@@ -54,7 +56,11 @@
                                                     <input type="hidden" name="jumlah" value="{{ max($item->jumlah - 1, 1) }}">
                                                     <button type="submit" aria-label="Kurangi jumlah {{ $produk->nama }}" @disabled($item->jumlah <= 1) class="flex h-11 w-11 items-center justify-center text-xl font-extrabold text-olive disabled:opacity-40">-</button>
                                                 </form>
-                                                <span class="w-10 text-center font-extrabold" aria-label="Jumlah">{{ $item->jumlah }}</span>
+                                                <form method="POST" action="{{ route('keranjang.ubah', $item->id) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="number" name="jumlah" value="{{ $item->jumlah }}" min="1" max="{{ max($produk->stok, 1) }}" inputmode="numeric" data-jumlah-keranjang aria-label="Jumlah {{ $produk->nama }}" class="h-11 w-14 bg-transparent text-center font-extrabold [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none">
+                                                </form>
                                                 <form method="POST" action="{{ route('keranjang.ubah', $item->id) }}">
                                                     @csrf
                                                     @method('PATCH')

@@ -5,3 +5,4 @@ import './katalog';
 import './penjual';
 import './sahabat';
 import './peta';
+import './konfirmasi';
