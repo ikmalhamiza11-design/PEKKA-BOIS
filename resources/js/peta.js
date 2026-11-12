@@ -49,9 +49,9 @@ if (wadah) {
 
                 L.circleMarker([item.lat, item.lng], {
                     radius: 11,
-                    color: '#48550F',
+                    color: '#412A4D',
                     weight: 2,
-                    fillColor: '#B0BC13',
+                    fillColor: '#C98DF2',
                     fillOpacity: 0.85,
                 })
                     .addTo(peta)

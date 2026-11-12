@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#48550f">
+    <meta name="theme-color" content="#412a4d">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('judul', 'Panel Admin') - Admin {{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -31,9 +31,12 @@
 
     <header class="sticky top-0 z-30 border-b border-olive/10 bg-olive text-white">
         <div class="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
-            <a href="{{ route('admin.dasbor') }}" class="leading-tight">
+            <a href="{{ route('admin.dasbor') }}" class="flex items-center gap-2 leading-tight">
+                <img src="{{ asset('images/logo-pekka-bois.png') }}" alt="" width="256" height="256" class="h-9 w-9 shrink-0 rounded-full" decoding="async">
+                <span>
                 <span class="block text-base font-extrabold text-lime">PEKKA BOIS</span>
                 <span class="block text-[0.65rem] font-semibold tracking-wide text-white/80">PANEL ADMIN</span>
+                </span>
             </a>
             <div class="ml-auto flex items-center gap-3 text-sm">
                 <span class="hidden text-right leading-tight sm:block">

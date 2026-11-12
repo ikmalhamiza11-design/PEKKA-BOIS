@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#fcf3dd">
+    <meta name="theme-color" content="#f6eefb">
     <title>@yield('judul', 'Beranda') - {{ config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet">
@@ -25,9 +25,7 @@
     <header class="sticky top-0 z-30 border-b border-olive/10 bg-cream/90 backdrop-blur">
         <div class="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4">
             <a href="{{ route('beranda') }}" class="flex items-center gap-3">
-                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-olive text-lime" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                </span>
+                <img src="{{ asset('images/logo-pekka-bois.png') }}" alt="" width="256" height="256" class="h-10 w-10 shrink-0 rounded-full" decoding="async">
                 <span class="leading-tight">
                     <span class="block text-base font-extrabold text-olive">PEKKA BOIS</span>
                     <span class="block text-[0.6rem] font-semibold tracking-wide text-olive/70">BOGOR ISTIMEWA</span>

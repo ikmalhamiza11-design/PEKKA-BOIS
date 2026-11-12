@@ -7,12 +7,15 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-olive: #48550f;
-    --color-olive-dark: #343f0a;
-    --color-lime: #b0bc13;
-    --color-cream: #fcf3dd;
-    --color-paper: #fffdf7;
-    --color-ink: #1f2410;
+    /* Palet ungu: dasar #c98df2, diselaraskan dengan palet A-B-M-C dari klien */
+    --color-olive: #412a4d;       /* A - ungu tua (teks, tombol, header) */
+    --color-olive-dark: #322c58;  /* M - ungu navy (hover, tekan) */
+    --color-lime: #c98df2;        /* warna dasar (aksen, latar lembut) */
+    --color-mauve: #9978ad;       /* B - ungu sedang */
+    --color-lilac: #c9afd4;       /* C - ungu muda */
+    --color-cream: #f6eefb;
+    --color-paper: #fdfaff;
+    --color-ink: #1d1727;
     --color-danger: #c62828;
     --color-success: #2e7d32;
 }
@@ -55,19 +58,19 @@
 }
 
 .foto-0 {
-    background: #e3e8a8;
+    background: #e6d3f5;
 }
 
 .foto-1 {
-    background: #f3e0c2;
+    background: #d9cbea;
 }
 
 .foto-2 {
-    background: #cfdb8e;
+    background: #c9afd4;
 }
 
 .foto-3 {
-    background: #f0d5bf;
+    background: #efd9f7;
 }
 
 .gulir-x {
